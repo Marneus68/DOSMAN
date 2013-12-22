@@ -12,29 +12,36 @@ LDFLAGS := $(shell pkg-config gtkmm-3.0 --cflags)
 LDLIBS 	:= $(shell pkg-config gtkmm-3.0 --libs)
 
 # Source directory
-# SRCDIR := src
+SRCDIR	:= src
 # Include directory
-# INCDIR := include
+INCDIR	:= include
 # Object directory
-# OBJDIR := obj
+OBJDIR	:= obj
+
+# setting the vpath (additionnal search path for make)
+VPATH	:= $(SRCDIR) $(OBJDIR)
 
 CPP_SRCS    = $(wildcard src/*.cpp)
-OBJ_FILES   = $(CPP_SRCS:.cpp=.o)
+OBJ_FILES   = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(CPP_SRCS))
 
-all: ${TARGET}
+all: objdir ${TARGET}
 
 $(TARGET): $(OBJ_FILES)
 	@echo "Linking..."
 	$(CC) $(WARN) $(OFLAGS) $(LDFLAGS) $(OBJ_FILES) -o $@ $(LDLIBS) 
 	@echo "Done."
 
-.cpp.o : 
+obj/%.o: %.cpp
 	@echo "Compiling "$<"..."
 	$(CC) -c $(WARN) $(OFLAGS) $(LDFLAGS) $< -o $@
 
 clean: 
 	@echo "Cleaning..."
-	rm -rf ./src/*.o
+	rm -rf $(OBJDIR)/*.o
+
+objdir:
+	@echo "Creating object directory..."
+	mkdir -p $(OBJDIR)
 
 mrproper: clean
 	rm -rf ${TARGET}
