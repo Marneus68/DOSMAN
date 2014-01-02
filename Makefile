@@ -46,3 +46,9 @@ objdir:
 mrproper: clean
 	rm -rf ${TARGET}
 
+install:
+	@echo "Installing..."
+
+doc:
+	@echo "Building documentation..."
+	pandoc SPEC.md -o SPEC.pdf
