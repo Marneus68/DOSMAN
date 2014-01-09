@@ -21,11 +21,11 @@ Mode de fonctionnement proposé
 
 DOSMAN devra gérer l'installation, la configuration, l'exécution, la gestion de snapshots, captures d'images et de vidéo de logiciels DOS émulés avec DosBox. Pour ce faire in convient de définir son fonctionnement attendu.  
 
-Chaque logiciel géré par DOSMAN se vera attribué son propre dossier dans le repertoire utilisateur de DOSMAN. Ce répertoire utilisateur sera un répertoire caché propre à DOSMAN désigné à contenir les logiciels gérés dans leurs dossiers respectifs, ainsi que les fichiers de configuration leur étant propre. Le nom proposé pour le répertoire utilisateur de DOSMAN sera *~/.dosman/* .   
+Chaque logiciel géré par DOSMAN se vera attribué son propre dossier dans le répertoire utilisateur de DOSMAN. Ce répertoire utilisateur sera un répertoire caché propre à DOSMAN désigné à contenir les logiciels gérés dans leurs dossiers respectifs, ainsi que les fichiers de configuration leur étant propre. Le nom proposé pour le répertoire utilisateur de DOSMAN sera *~/.dosman/* .   
 
-Contenu des réertoires de programmes:   
+Contenu des répertoires de programmes:   
 - Fichier de configuration (dosbox.conf)   
-- Fichier image servant d'icone dans DOSMAN (cover.jpg, cover.png) [optionnel]   
+- Fichier image servant d'icône dans DOSMAN (cover.jpg, cover.png) [optionnel]   
 - Sous répertoire contenant les fichiers d'installation du programme  
 
 Plus d'informations sur les fichiers de configuration de dosbox peuvent être trouvés [ici](http://www.dosbox.com/wiki/Dosbox.conf). Ces propriétés sont celles qui devront être éditables dans l'interface de DOSMAN pour chaque programme.  
@@ -37,15 +37,15 @@ L'interface utilisateur proposée se divise en plusieurs écrans aussi appelés 
 
 - Vue liste/configuration:
 Cette vue est divisée en 3 sections:  
-    - Bare de tache suppéreirue permetant l'ajout et la supression d'entrées de programmes ainsi que l'accès à une fenêtre de configuration de DOSMAN.
+    - Barre de tache supérieure permettant l'ajout et la suppression d'entrées de programmes ainsi que l'accès à une fenêtre de configuration de DOSMAN.
     - Liste des entrées de programmes.
-    - Panneau de configuration permettant la modifications d'elements du fichier de configuration ainsi que d'ouvrir ce dernier dans un éditeur de texte pour édiion avancée. Le contenu de ce paneau dépends de l'éentrée séléctionnée dans la liste des programmes.
+    - Panneau de configuration permettant la modifications d'éléments du fichier de configuration ainsi que d'ouvrir ce dernier dans un éditeur de texte pour édiion avancée. Le contenu de ce panneau dépends de l'entrée sélectionnée dans la liste des programmes.
 
 - Vue "Collection"
-Cette vue regroupe de façon graphique les différents programmes installés dans DOSMAN en utilisant les images spécifiées dans leur dossiers d'installation. Des icones par defaut seront utilisés pour les programmes n'ayant pas d'images associées. Cette vue sera proposée par défaut à partir du moment ou au moins un programme sera installé via DOSMAN.   
+Cette vue regroupe de façon graphique les différents programmes installés dans DOSMAN en utilisant les images spécifiées dans leur dossiers d'installation. Des icônes par défaut seront utilisés pour les programmes n'ayant pas d'images associées. Cette vue sera proposée par défaut à partir du moment ou au moins un programme sera installé via DOSMAN.   
 
 - Vue configuration:
-Cette vue permet de configurer DOSMAN, modifier son dossier utilisateur ou rétablir celui par defaut, selectionner la page que l'application montrera à son lancement par defaut et d'éditer de fichier de configuration de dosbox global.  
+Cette vue permet de configurer DOSMAN, modifier son dossier utilisateur ou rétablir celui par défaut, sélectionner la page que l'application montrera à son lancement par défaut et d'éditer de fichier de configuration de dosbox global.  
 
 Maquettes
 ---------

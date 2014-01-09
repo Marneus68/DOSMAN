@@ -4,16 +4,20 @@
 #include <gtkmm/button.h>
 #include <gtkmm/window.h>
 
-class HelloWorld : public Gtk::Window
-{
-    public:
-        HelloWorld();
-        virtual ~HelloWorld();
+namespace dosman {
+    class HelloWorld : public Gtk::Window
+    {
+        public:
+            HelloWorld();
+            virtual ~HelloWorld();
 
-    protected:
-        void on_button_clicked();
+        protected:
+            void on_button_clicked();
 
-    Gtk::Button m_button;
-};
+        Gtk::Button m_button;
+    };
+} /* dosman */
+
 
 #endif // GTKMM_EXAMPLE_HELLOWORLD_H
+

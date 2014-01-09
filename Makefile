@@ -45,6 +45,7 @@ objdir:
 
 mrproper: clean
 	rm -rf ${TARGET}
+	rm -f SPEC.pdf
 
 install:
 	@echo "Installing..."
