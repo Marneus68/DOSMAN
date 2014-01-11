@@ -1,5 +1,5 @@
 % Spécifications fonctionnelles - DOSMAN
-% Duane Bekaert - Mamadou Coulibali - Mathieu Boyer
+% Duane Bekaert - Mamadou Coulibali
 % 2013-12-18
 
 DOSMAN
