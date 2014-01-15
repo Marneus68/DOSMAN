@@ -13,18 +13,21 @@ namespace dosman {
 
         m_refActionGroup = Gtk::ActionGroup::create();
 
+        // Information on the stock Gtk items cen be found here :
+        // https://developer.gnome.org/gtk3/stable/gtk3-Stock-Items.html#GTK-STOCK-EXECUTE:CAPS
+
         // Install new program action
         m_refActionGroup->add(Gtk::Action::create("InstallNewProgram",
-                Gtk::Stock::NEW, "_New", "Install New Program"),
+                Gtk::Stock::ADD, "_New", "Install New Program"),
                 sigc::mem_fun(*this, &MainWindow::on_install_new_program));
-        // Open AppMenu action
-        m_refActionGroup->add(Gtk::Action::create("Preferences",
-                Gtk::Stock::NEW, "_Preferences", "Preferences"),
-                sigc::mem_fun(*this, &MainWindow::on_appmenu));
         // Quit Action
         m_refActionGroup->add(Gtk::Action::create("Quit",
                 Gtk::Stock::QUIT, "_Quit", "Quit"),
                 sigc::mem_fun(*this, &MainWindow::on_quit));
+        // Open AppMenu action
+        m_refActionGroup->add(Gtk::Action::create("Preferences",
+                Gtk::Stock::PREFERENCES, "_Preferences", "Preferences"),
+                sigc::mem_fun(*this, &MainWindow::on_appmenu));
 
         m_refUIManager = Gtk::UIManager::create();
         m_refUIManager->insert_action_group(m_refActionGroup);
@@ -36,7 +39,9 @@ namespace dosman {
             "  <toolbar  name='ToolBar'>"
             "    <toolitem action='InstallNewProgram'/>"
             "    <toolitem action='Quit'/>"
-            "    <toolitem action='Preferences'/>"
+            "    <separator expand='true'/>"
+            //"    <toolitem placeholder='Search'/>"
+            "    <toolitem action='Preferences' />"
             "  </toolbar>"
             "</ui>";
 
@@ -71,7 +76,7 @@ namespace dosman {
 
     void MainWindow::on_quit()
     {
-        std::cout << "Quit" << std::endl;
+        hide(); // Quit the app by hiding the main window
     }
 } /* dosman */
 
