@@ -6,6 +6,8 @@
 #include <gtkmm/window.h>
 #include <gtkmm/uimanager.h>
 
+#include "EntryManager.h"
+
 namespace dosman {
     class MainWindow : public Gtk::Window
     {
@@ -22,6 +24,8 @@ namespace dosman {
             Gtk::Box        m_box;
             Glib::RefPtr<Gtk::UIManager> m_refUIManager;
             Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
+
+            EntryManager * m_entryManager;
     }; /* MainWindow */
 } /* dosman */
 

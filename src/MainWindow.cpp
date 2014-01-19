@@ -1,7 +1,9 @@
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include <iostream>
 
+#include <gtkmm.h>
 #include <gtkmm/stock.h>
+#include <gtkmm/icontheme.h>
 
 namespace dosman {
     MainWindow::MainWindow() :
@@ -11,11 +13,23 @@ namespace dosman {
         set_default_size(800,600);
         add(m_box); 
 
+        // Initialize the EntryManager to fetch all the entries in the dosman directory
+        m_entryManager = EntryManager::Initialize();
+
         m_refActionGroup = Gtk::ActionGroup::create();
+
+        // creat an IconTheme to get all the icons provided by the current theme
+        //Glib::RefPtr<Gtk::IconTheme> iconTheme = Gtk::IconTheme::get_default();
+        //std::cout << iconTheme->list_icons().raw();
+
+        //std::vector<Glib::ustring> namesVec = iconTheme->list_icons();
+
+        //for(int i = 0; i < namesVec.size(); i++)
+            //std::cout << namesVec[i].raw() << std::endl;
 
         // Information on the stock Gtk items cen be found here :
         // https://developer.gnome.org/gtk3/stable/gtk3-Stock-Items.html#GTK-STOCK-EXECUTE:CAPS
-
+        //
         // Install new program action
         m_refActionGroup->add(Gtk::Action::create("InstallNewProgram",
                 Gtk::Stock::ADD, "_New", "Install New Program"),
@@ -38,7 +52,7 @@ namespace dosman {
             "<ui>"
             "  <toolbar  name='ToolBar'>"
             "    <toolitem action='InstallNewProgram'/>"
-            "    <toolitem action='Quit'/>"
+            //"    <toolitem action='Quit'/>"
             "    <separator expand='true'/>"
             //"    <toolitem placeholder='Search'/>"
             "    <toolitem action='Preferences' />"
@@ -67,6 +81,7 @@ namespace dosman {
     void MainWindow::on_install_new_program()
     {
         std::cout << "Install new Application" << std::endl;
+        m_entryManager->updateEntries();
     }
 
     void MainWindow::on_appmenu()

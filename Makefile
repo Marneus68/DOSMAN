@@ -37,21 +37,34 @@ obj/%.o: %.cpp
 	@echo "Compiling "$<"..."
 	$(CC) -c $(WARN) $(OFLAGS) $(CFLAGS) $(LDFLAGS) $< -o $@
 
-clean: 
-	@echo "Cleaning..."
-	rm -rf $(OBJDIR)/*.o
-
 objdir:
 	@echo "Creating object directory..."
 	mkdir -p $(OBJDIR)
 
+clean: 
+	@echo "Cleaning..."
+	rm -rf $(OBJDIR)/*.o
+
 mrproper: clean
 	rm -rf ${TARGET}
-	rm -f SPEC.pdf
 
 install:
 	@echo "Installing..."
 
 doc:
 	@echo "Building documentation..."
+	doxygen doxygen.conf
 	pandoc SPEC.md -o SPEC.pdf
+
+cleandoc:
+	@echo "Building documentation..."
+	rm -f SPEC.pdf
+	rm -rf doc
+
+test: $(TARGET)
+	@echo "Creating a test scenario..."
+	mkdir -p ~/.dosman
+	cp -rf test -t ~/.dosman
+	./dosman
+
+
