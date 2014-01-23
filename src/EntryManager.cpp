@@ -1,6 +1,10 @@
 #include "EntryManager.h"
 
-#include <dirent.h>
+extern "C" {
+    #include <dirent.h>
+    #include <string.h>
+    #include <stdlib.h>
+}
 #include <iostream>
 
 #include "constants.h"
@@ -13,6 +17,9 @@ namespace dosman {
 
     /* constructor */
     EntryManager::EntryManager() {
+        char* home_path = (char*) getenv("HOME"); 
+        char* dosman_path = strcat(home_path, DM_DIR);
+        m_dosmanPath = std::string(dosman_path);
     }
 
     /* destructor */
@@ -39,12 +46,38 @@ namespace dosman {
 
         DIR *dir;
         struct dirent *ent;
-        if ((dir = opendir (DM_DIR)) != NULL) {
+
+        std::cout << m_dosmanPath << std::endl;
+
+        if ((dir = opendir(m_dosmanPath.c_str())) != NULL) {
             while ((ent = readdir (dir)) != NULL) {
-                printf ("%s\n", ent->d_name);
+                if (ent->d_name[0] == '.') continue;
                 if (ent->d_type == DT_DIR) {
                     // This is a directory, this could be a valid entry
                     std::cout << ent->d_name << std::endl;
+
+                    DIR *sub_dir;
+                    struct dirent *sub_ent;
+
+                    if ((sub_dir = opendir(m_dosmanPath.c_str())) != NULL) {
+                        int score = 0;
+                        while ((sub_ent = readdir (sub_dir)) != NULL) {
+                            if (sub_ent->d_name[0] == '.') continue;
+                            // If the directory contains a directory contains a subfolder OR a <entry_name>.conf file
+                            // This should become a tmp_entry
+                            if (sub_ent->d_type == DT_DIR) score++;
+                            else if (strcmp(sub_ent->d_name, DM_CONF)) score++;
+                            else if (strcmp(sub_ent->d_name, DM_COVP)) score++;
+                            else if (strcmp(sub_ent->d_name, DM_COVJ)) score++;
+                            
+                            // If the directory contains a cover.jpg or cover.png this should be added to the tmp_entry
+
+                            // Add the tmp_entry to the m_entries vector
+                        }
+                        std::cout << "   Score of the entry : " << score << std::endl;
+                    } else {
+                        std::cerr << "Could not open " << ent->d_name << std::endl;
+                    }
                 }
             }
             closedir (dir);

@@ -52,7 +52,7 @@ namespace dosman {
             "<ui>"
             "  <toolbar  name='ToolBar'>"
             "    <toolitem action='InstallNewProgram'/>"
-            //"    <toolitem action='Quit'/>"
+            "    <toolitem action='Quit'/>"
             "    <separator expand='true'/>"
             //"    <toolitem placeholder='Search'/>"
             "    <toolitem action='Preferences' />"

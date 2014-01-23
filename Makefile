@@ -7,9 +7,9 @@ WARN    :=
 # Optimisation
 OFLAGS  := 
 # Link Options
-LDFLAGS := $(shell pkg-config gtkmm-3.0 --cflags) $(shell pkg-config glibmm-2.4 --cflags)
+LDFLAGS := `pkg-config gtkmm-3.0 --cflags` `pkg-config glibmm-2.4 --cflags`
 # Link Libraries
-LDLIBS 	:= $(shell pkg-config gtkmm-3.0 --libs) $(shell pkg-config glibmm-2.4 --libs)
+LDLIBS 	:= `pkg-config gtkmm-3.0 --libs` `pkg-config glibmm-2.4 --libs`
 
 # Source directory
 SRCDIR	:= src

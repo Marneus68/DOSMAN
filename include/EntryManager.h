@@ -25,6 +25,10 @@ namespace dosman {
             * @brief Vector of Entry.
             */
             std::vector<Entry> m_entries;
+            /**
+            * @brief String containing the full absolute path to the .dosman directory
+            */
+            std::string m_dosmanPath;
         public:
             /**
             * @brief Initializer of the singleton class.
