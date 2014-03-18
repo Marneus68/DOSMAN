@@ -18,7 +18,7 @@ namespace dosman {
     /* constructor */
     EntryManager::EntryManager() {
         char* home_path = (char*) getenv("HOME"); 
-        char* dosman_path = strcat(home_path, DM_DIR);
+        char* dosman_path = strcat(home_path, DOSMAN_DIR);
         m_dosmanPath = std::string(dosman_path);
     }
 
@@ -54,27 +54,36 @@ namespace dosman {
                 if (ent->d_name[0] == '.') continue;
                 if (ent->d_type == DT_DIR) {
                     // This is a directory, this could be a valid entry
-                    std::cout << ent->d_name << std::endl;
-
                     DIR *sub_dir;
                     struct dirent *sub_ent;
 
-                    if ((sub_dir = opendir(m_dosmanPath.c_str())) != NULL) {
-                        int score = 0;
+                    std::string tmp_path(m_dosmanPath);
+                    tmp_path+="/";
+                    tmp_path.append(ent->d_name);
+
+                    if ((sub_dir = opendir(tmp_path.c_str())) != NULL) {
+                        int isValidEntry = 0; 
+                        // a valid entry contains at least a dosbox.conf
                         while ((sub_ent = readdir (sub_dir)) != NULL) {
                             if (sub_ent->d_name[0] == '.') continue;
-                            // If the directory contains a directory contains a subfolder OR a <entry_name>.conf file
-                            // This should become a tmp_entry
-                            if (sub_ent->d_type == DT_DIR) score++;
-                            else if (strcmp(sub_ent->d_name, DM_CONF)) score++;
-                            else if (strcmp(sub_ent->d_name, DM_COVP)) score++;
-                            else if (strcmp(sub_ent->d_name, DM_COVJ)) score++;
-                            
-                            // If the directory contains a cover.jpg or cover.png this should be added to the tmp_entry
-
-                            // Add the tmp_entry to the m_entries vector
+                            std::string tmp_str(sub_ent->d_name);
+                            if (!endsWith(tmp_str, std::string(DOSMAN_CONF_EXT))) 
+                                isValidEntry++;
+                            //if (sub_ent->d_type == DT_DIR) score++;
+                            //else if (!tmp_str.compare(DOSMAN_COVP) && !tmp_str.compare(DOSMAN_COVJ)) score++;
                         }
-                        std::cout << "   Score of the entry : " << score << std::endl;
+                        std::cout << ent->d_name << " : " << isValidEntry << std::endl;
+                        if (isValidEntry > 1)
+                            std::cerr << "   Warnig: More than one config files were found when traveling the " << ent->d_name << " directory." << std::endl;
+
+                        if (isValidEntry) {
+                            // We create a new entry and add it to the entry vector
+
+                            // Path 
+                            // .conf path
+                            // vector of sub_folder path
+                            // image
+                        }
                     } else {
                         std::cerr << "Could not open " << ent->d_name << std::endl;
                     }
@@ -82,7 +91,7 @@ namespace dosman {
             }
             closedir (dir);
         } else {
-            std::cerr << "Could not open " << DM_DIR << std::endl;
+            std::cerr << "Could not open " << DOSMAN_DIR << std::endl;
         }
     }
 
@@ -97,5 +106,16 @@ namespace dosman {
 
     bool EntryManager::isNameFree(const std::string &e_name) {
     }
+
+    bool EntryManager::endsWith(std::string const &fullString, 
+            std::string const &ending)
+    {
+        if (fullString.length() >= ending.length()) {
+            return (0 == fullString.compare (fullString.length() - ending.length(), ending.length(), ending));
+        } else {
+            return false;
+        }
+    }
+
 } /* dosman */
 

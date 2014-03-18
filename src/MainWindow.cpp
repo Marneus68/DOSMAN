@@ -30,7 +30,7 @@ namespace dosman {
         // Information on the stock Gtk items cen be found here :
         // https://developer.gnome.org/gtk3/stable/gtk3-Stock-Items.html#GTK-STOCK-EXECUTE:CAPS
         //
-        // Install new program action
+        // Install new program acteion
         m_refActionGroup->add(Gtk::Action::create("InstallNewProgram",
                 Gtk::Stock::ADD, "_New", "Install New Program"),
                 sigc::mem_fun(*this, &MainWindow::on_install_new_program));

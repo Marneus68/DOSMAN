@@ -74,6 +74,8 @@ namespace dosman {
             * @return true if the name is free, false otherwise.
             */
             bool isNameFree(const std::string & e_name);
+
+            static bool endsWith (std::string const &fullString, std::string const &ending);
     };
 } /* dosman */
 
