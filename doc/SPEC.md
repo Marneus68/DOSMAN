@@ -30,6 +30,11 @@ Contenu des répertoires de programmes:
 
 Plus d'informations sur les fichiers de configuration de dosbox peuvent être trouvés [ici](http://www.dosbox.com/wiki/Dosbox.conf). Ces propriétés sont celles qui devront être éditables dans l'interface de DOSMAN pour chaque programme.  
 
+Bibliothèques logiciel utilisées
+--------------------------------
+
+Afin de réaliser l'interface graphiue, c'est la bibliothèque [gtkmm 3.0](http://www.gtkmm.org/en/) développée par le projet [GNOME](http://www.gnome.org/) qui sera utilisée. La lécture et écriture des fichiers de configuration sera effectuée grace à la librairie glibmm, binding C++ de la librairie Glib.
+
 Interface utilisateur proposée
 ------------------------------
 
@@ -50,4 +55,9 @@ Cette vue permet de configurer DOSMAN, modifier son dossier utilisateur ou réta
 Maquettes
 ---------
 
-![Proposition d'interface](./img/gui.png)
+![Proposition d'interface](../img/gui.png)
+
+GANT
+----
+
+
