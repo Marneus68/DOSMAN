@@ -1,14 +1,14 @@
-#include "MainWindow.h"
-#include <gtkmm/main.h>
+#include <gtkmm.h>
 #include <iostream>
+
+#include "MainWindow.h"
 
 int main (int argc, char *argv[])
 {
-    Gtk::Main kit(argc, argv);
-
-    dosman::MainWindow mainwindow;
-    Gtk::Main::run(mainwindow);
-
-     return 0;
+    Glib::RefPtr<Gtk::Application> app =
+        Gtk::Application::create(argc, argv,
+        "fr.iridia.dosman");
+    dosman::MainWindow window;
+    return app->run(window);
 }
 

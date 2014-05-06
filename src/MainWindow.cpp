@@ -3,94 +3,54 @@
 
 #include <gtkmm.h>
 #include <gtkmm/stock.h>
+#include <gtkmm/enums.h>
 #include <gtkmm/icontheme.h>
 
 namespace dosman {
     MainWindow::MainWindow() :
-        m_box(Gtk::ORIENTATION_VERTICAL)
+        m_header_box(Gtk::ORIENTATION_HORIZONTAL),
+        m_content_box(Gtk::ORIENTATION_VERTICAL),
+        m_label_foo("collection"),
+        m_label_bar("edition")
     {
         set_title("DOSMAN");
+        set_border_width(10);
         set_default_size(800,600);
-        add(m_box); 
 
-        // Initialize the EntryManager to fetch all the entries in the dosman directory
-        m_entryManager = EntryManager::Initialize();
+        m_header_bar.set_show_close_button(true);
+        m_header_bar.set_title("DOSMAN");
 
-        m_refActionGroup = Gtk::ActionGroup::create();
+        set_titlebar(m_header_bar);
 
-        // creat an IconTheme to get all the icons provided by the current theme
-        //Glib::RefPtr<Gtk::IconTheme> iconTheme = Gtk::IconTheme::get_default();
-        //std::cout << iconTheme->list_icons().raw();
+        m_stack.set_transition_type(Gtk::STACK_TRANSITION_TYPE_SLIDE_LEFT_RIGHT);
+        m_stack.set_transition_duration(1000);
 
-        //std::vector<Glib::ustring> namesVec = iconTheme->list_icons();
+        m_stack.add(m_label_foo, "m_label_foo", "Collection");
+        m_stack.add(m_label_bar, "m_label_bar", "Edition");
 
-        //for(int i = 0; i < namesVec.size(); i++)
-            //std::cout << namesVec[i].raw() << std::endl;
+        m_stack_switcher.set_stack(m_stack);
 
-        // Information on the stock Gtk items cen be found here :
-        // https://developer.gnome.org/gtk3/stable/gtk3-Stock-Items.html#GTK-STOCK-EXECUTE:CAPS
-        //
-        // Install new program acteion
-        m_refActionGroup->add(Gtk::Action::create("InstallNewProgram",
-                Gtk::Stock::ADD, "_New", "Install New Program"),
-                sigc::mem_fun(*this, &MainWindow::on_install_new_program));
-        // Quit Action
-        m_refActionGroup->add(Gtk::Action::create("Quit",
-                Gtk::Stock::QUIT, "_Quit", "Quit"),
-                sigc::mem_fun(*this, &MainWindow::on_quit));
-        // Open AppMenu action
-        m_refActionGroup->add(Gtk::Action::create("Preferences",
-                Gtk::Stock::PREFERENCES, "_Preferences", "Preferences"),
-                sigc::mem_fun(*this, &MainWindow::on_appmenu));
+        m_header_box.pack_start(m_stack_switcher, true, true, 0);
+        m_content_box.pack_start(m_stack, true, true, 0);
 
-        m_refUIManager = Gtk::UIManager::create();
-        m_refUIManager->insert_action_group(m_refActionGroup);
+        m_header_bar.pack_start(m_header_box);
 
-        add_accel_group(m_refUIManager->get_accel_group());
+        add(m_content_box);
 
-        Glib::ustring ui_info = 
-            "<ui>"
-            "  <toolbar  name='ToolBar'>"
-            "    <toolitem action='InstallNewProgram'/>"
-            "    <toolitem action='Quit'/>"
-            "    <separator expand='true'/>"
-            //"    <toolitem placeholder='Search'/>"
-            "    <toolitem action='Preferences' />"
-            "  </toolbar>"
-            "</ui>";
-
-        try
-        {
-            m_refUIManager->add_ui_from_string(ui_info);
-        }
-        catch(const Glib::Error& ex)
-        {
-            std::cerr << "building menus failed: " <<  ex.what();
-        }
-        
-        // Show the toolbar widgets (?)
-        Gtk::Widget* pToolbar = m_refUIManager->get_widget("/ToolBar") ;
-        if(pToolbar)
-            m_box.pack_start(*pToolbar, Gtk::PACK_SHRINK);
-
-        show_all_children();
+        show_all_children(true);
     }
 
     MainWindow::~MainWindow() {}
 
-    void MainWindow::on_install_new_program()
-    {
-        std::cout << "Install new Application" << std::endl;
-        m_entryManager->updateEntries();
+    void MainWindow::on_install_new_program() {
+        std::cerr << "Open the \"New Entry\" Wizarp" << std::endl;
     }
 
-    void MainWindow::on_appmenu()
-    {
-        std::cout << "Open AppMenu" << std::endl;
+    void MainWindow::on_open_pref_window() {
+        std::cerr << "Open the preferences window" << std::endl;
     }
 
-    void MainWindow::on_quit()
-    {
+    void MainWindow::on_quit() {
         hide(); // Quit the app by hiding the main window
     }
 } /* dosman */
