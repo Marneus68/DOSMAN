@@ -55,7 +55,6 @@ namespace dosman {
             *
             * @return the std::vector<std::string> pointer containing all sub-folders.
             */
-            const std::vector<std::string> & getSubFoldersPath(void);
     };
 } /* dosman */
 

@@ -1,11 +1,14 @@
 #include "EntryManager.h"
 
+#include <iostream>
+
 extern "C" {
     #include <dirent.h>
     #include <string.h>
     #include <stdlib.h>
+    #include <unistd.h>
+    #include <sys/stat.h>
 }
-#include <iostream>
 
 #include "constants.h"
 
@@ -19,14 +22,32 @@ namespace dosman {
     EntryManager::EntryManager() {
         char* home_path = (char*) getenv("HOME"); 
         char* dosman_path = strcat(home_path, DOSMAN_DIR);
-        m_dosmanPath = std::string(dosman_path);
+        m_dosman_path = std::string(dosman_path);
+
+        struct stat st;
+        if(stat(m_dosman_path.c_str(),&st) == 0) {
+            if(st.st_mode & S_IFDIR != 0) {
+                std::cout << m_dosman_path << " is present" << std::endl;
+                ftw(m_dosman_path.c_str(), walk, 0);
+            }
+        } else 
+            std::cout << m_dosman_path << " is NOT present" << std::endl;
     }
 
     /* destructor */
     EntryManager::~EntryManager(void) {}
 
+    int EntryManager::walk(const char *fpath, const struct stat *sb, int typeflag) {
+        if (typeflag != FTW_D) return 0;
+
+        std::cout << "foo" << std::endl;
+        
+        return 0;
+    }
+
     /* method to initialize the singleton class */
     EntryManager* EntryManager::Initialize(void) {
+        std::cout << "EntryManager::Initialize()" << std::endl;
         if (_singleton == NULL) {
             _singleton =  new EntryManager();
         }
@@ -41,25 +62,14 @@ namespace dosman {
         }
     }
 
-    void EntryManager::updateEntries(void) {
-    }
-
     void EntryManager::addEntry(const Entry &e_entry) {
-    }
-
-    std::vector<Entry> EntryManager::getEntries(void) {
-    }
-
-    Entry * EntryManager::getEntryWithName(const std::string &e_name) {
     }
 
     bool EntryManager::isNameFree(const std::string &e_name) {
     }
 
-    bool EntryManager::endsWith(std::string const &fullString, 
-            std::string const &ending)
-    {
+    unsigned int EntryManager::getEntriesCount() {
+        return m_entries.size();
     }
-
 } /* dosman */
 

@@ -50,12 +50,11 @@ install:
 doc:
 	@echo "Building documentation..."
 	doxygen doxygen.conf
-	pandoc SPEC.md -o SPEC.pdf
+	#pandoc SPEC.md -o SPEC.pdf
 
 cleandoc:
 	@echo "Building documentation..."
 	rm -f SPEC.pdf
-	rm -rf doc
 
 test: $(TARGET)
 	@echo "Creating a test scenario..."
