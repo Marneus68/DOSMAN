@@ -44,8 +44,8 @@ namespace dosman {
             Gtk::StackSwitcher              m_stack_switcher;
             Gtk::Stack                      m_stack;
 
-            /* temporary content for switched by the stackswitcher */
-            Gtk::Label                      m_label_bar;
+            Gtk::Label                      m_label_col_empty_title,
+                                            m_label_col_empty_body;
             
             /* actual content for the stackswitcher */
             Gtk::ScrolledWindow             m_scrolled_window;

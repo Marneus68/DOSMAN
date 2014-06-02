@@ -1,4 +1,5 @@
 #include "Entry.h"
+
 const std::string * dosman::Entry::getImagePath(void)
 {
     return 0;

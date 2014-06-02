@@ -30,8 +30,10 @@ namespace dosman {
                 std::cout << m_dosman_path << " is present" << std::endl;
                 ftw(m_dosman_path.c_str(), walk, 0);
             }
-        } else 
+        } else  {
             std::cout << m_dosman_path << " is NOT present" << std::endl;
+            std::cout << m_dosman_path << " has been created" << std::endl;
+        }
     }
 
     /* destructor */
