@@ -1,5 +1,15 @@
 #include "NewEntryAssistant.h"
 
+extern "C" {
+    #include <sys/stat.h>
+}
+
+void dosman::NewEntryAssistant::create_entry_dir(std::string e_name)
+{
+    mkdir(e_name.c_str(), 0);
+}
+
+
 dosman::NewEntryAssistant::NewEntryAssistant()
 {
 }

@@ -1,6 +1,8 @@
 #ifndef __NEWENTRYASSISTANT_H__
 #define __NEWENTRYASSISTANT_H__
 
+#include <string>
+
 #include <gtkmm/assistant.h>
 
 namespace dosman {
@@ -17,6 +19,8 @@ namespace dosman {
 
             // Member functions:
             void print_status();
+
+            void create_entry_dir(std::string e_name);
 
         public:
             NewEntryAssistant ();
