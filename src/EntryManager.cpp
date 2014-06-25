@@ -41,9 +41,12 @@ namespace dosman {
 
     int EntryManager::walk(const char *fpath, const struct stat *sb, int typeflag) {
         if (typeflag != FTW_D) return 0;
+        DIR *dir;
+        struct dirent *ent;
+        int score;
 
-        std::cout << "foo" << std::endl;
-        
+        std::cout << fpath << std::endl;
+
         return 0;
     }
 
@@ -71,7 +74,8 @@ namespace dosman {
     }
 
     unsigned int EntryManager::getEntriesCount() {
-        return m_entries.size();
+        //return m_entries.size();
+        return 0;
     }
 } /* dosman */
 

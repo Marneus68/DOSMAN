@@ -7,55 +7,35 @@
 namespace dosman {
     /**
     * @brief Class representing a program present in the DOSMAN folder.
+    * Thes programs are actually named folders. Each of these folder can contain an image
+    * and always contains a config file and a drive folder that olds the files for this
+    * installation.
     */
     class Entry {
-        private:
+        protected:
             /* data */
             std::string name;
             std::string path;
             std::string imagePath;
-            std::vector<std::string> subFoldersPath;
+
+            bool hasImage;
+            bool hasConf;
+
+            void construct(void);
     
         public:
-            Entry ( const std::string & e_name = "", 
-                    const std::string & e_path = "", 
-                    const std::string & e_imagePath = "");
-            Entry ( const std::string & e_name = "", 
-                    const std::string & e_path = "", 
-                    const std::string & e_imagePath = "",
-                    std::vector<std::string> e_vector = std::vector<std::string>());
+            Entry (const std::string & e_path);
+            Entry (const Entry& e_entry);
             virtual ~Entry ();
+    
+            Entry operator=(Entry& e_entry);
 
-            /**
-            * @brief 
-            *
-            * @return the std::string pointer to the Entry name.
-            */
             const std::string * getName(void);
-            /**
-            * @brief 
-            *
-            * @return the std::string pointer to the Entry path.
-            */
             const std::string * getPath(void);
-            /**
-            * @brief 
-            *
-            * @return the std::string pointer to the Entry image path.
-            */
             const std::string * getImagePath(void);
-            /**
-            * @brief 
-            *
-            * @return the std::string pointer to the first sub-folder in the Entry.
-            */
-            const std::string * getPrimarySubFolderPath(void);
-            /**
-            * @brief 
-            *
-            * @return the std::vector<std::string> pointer containing all sub-folders.
-            */
+            const std::string * getDriveCPath(void);
     };
 } /* dosman */
 
 #endif /* __ENTRY_H__ */
+

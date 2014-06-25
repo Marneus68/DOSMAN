@@ -26,11 +26,8 @@ dosman::MainWindow::MainWindow() :
     // Collection page
     m_flow_box.set_homogeneous(true);
     m_flow_box.set_selection_mode(Gtk::SELECTION_NONE);
-    if (m_entry_manager->getEntriesCount()) {
-        //m_collection_box.add(    
-    } else {
-        m_collection_box.add(m_flow_box);
-    }
+
+    update_collection_widget();
 
     // Edition page
     //m_edition_box.add(m_label_bar);
@@ -71,15 +68,12 @@ void dosman::MainWindow::on_quit() {
 }
 
 void dosman::MainWindow::update_collection_widget() {
-    unsigned int n = 0; // Number of entries
-    if (m_entries_num == n) return;
-
-    if (n) {
-
+    // Remove the content of the m_collection_box
+    if (m_entry_manager->getEntriesCount()) {
+        //m_collection_box.add(    
     } else {
-
+        //Create the content of the flow box
+        m_collection_box.add(m_flow_box);
     }
-
-    m_entries_num = n;
 }
 

@@ -17,7 +17,7 @@ namespace dosman {
     *
     */
     class EntryManager {
-        private:
+        protected:
             EntryManager ();
             virtual ~EntryManager ();
             
@@ -26,7 +26,7 @@ namespace dosman {
             /**
             * @brief Map of Entry.
             */
-            std::map<std::string, Entry> m_entries;
+            static std::map<std::string, Entry> m_entries;
             /**
             * @brief String containing the full absolute path to the .dosman directory
             */
