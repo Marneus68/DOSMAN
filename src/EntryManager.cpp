@@ -12,6 +12,8 @@ extern "C" {
 
 #include "constants.h"
 
+#include "InvalidEntryException.h"
+
 namespace dosman {
     /* methods for singleton class EntryManager */
 
@@ -45,7 +47,15 @@ namespace dosman {
         struct dirent *ent;
         int score;
 
-        std::cout << fpath << std::endl;
+        //std::cout << fpath << std::endl;
+
+        std::string path(fpath);
+        
+        try {
+            Entry ent(path);
+        } catch (InvalidEntryException e) {
+            std::cerr << e.getMessage() << std::endl;
+        }
 
         return 0;
     }
