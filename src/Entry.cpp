@@ -93,6 +93,8 @@ void dosman::Entry::construct(void)
     // The config file parsing should go here
     //
     // You should probably make a separate function and call it here.
+    //
+    // The config file path is stored in the dosboxconf local variable
     ////////////////////////////////////////////////////////////////////////
     
 }
