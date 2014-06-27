@@ -30,9 +30,21 @@ namespace dosman {
     
             Entry operator=(Entry& e_entry);
 
+            /**
+            * @brief Returns the name of the Entry
+            */
             const std::string * getName(void);
+            /**
+            * @brief Returns the path to the Entry
+            */
             const std::string * getPath(void);
+            /**
+            * @brief Returns a path to the associated image if it exist. Returns null otherwise.
+            */
             const std::string * getImagePath(void);
+            /**
+            * @brief Returns the path to C drive of the Entry
+            */
             const std::string * getDriveCPath(void);
     };
 } /* dosman */
