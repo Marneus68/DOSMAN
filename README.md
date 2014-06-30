@@ -16,13 +16,20 @@ On debian based systems, gtkmm 3.0 and its developement headers can be installed
 Builing
 -------
 
-DOSMAN uses Make and g++. To build it, got the root directory of the project and type:    
+DOSMAN uses Make and g++. To build it, move to the project's directory and run:    
 
     make
 
 
-Installing
-----------
+Installing and Uninstalling
+---------------------------
 
-TODO.
+Installing and uninstalling can be done from the project's Makefile:
+
+    sudo make install
+
+
+
+    sudo make uninstall
+
 
