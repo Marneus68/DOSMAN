@@ -1,4 +1,4 @@
-#include <KeyValueParser.h>
+#include <Entry.h>
 
 int main(int argv, char** argc){  
   std::string filename = std::string("../dosbox.conf");
@@ -20,6 +20,9 @@ int main(int argv, char** argc){
   testVector.push_back("spanish");
   test.setMultipleValuesInKey("dosbox", "language", testVector);
   std::cout << test;
+  dosman::Entry testEntry = dosman::Entry(".");
+  std::cout << *(testEntry.dosboxParser) << std::endl;
+
     return 0;
 }
 

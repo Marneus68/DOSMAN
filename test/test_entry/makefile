@@ -29,6 +29,7 @@ LIBS =  gtkmm-3.0\
 
 #sources 
 SRCARC  = $(SRCDIR)KeyValueParser.cpp\
+					$(SRCDIR)Entry.cpp\
 
 DEMOSRC  = $(SRCDIR)application.cpp\
 					 $(SRCARC)
