@@ -47,6 +47,9 @@ mrproper: clean
 install:
 	@echo "Installing..."
 
+uninstall:
+	@echo "Uninstalling..."
+
 doc:
 	@echo "Building documentation..."
 	doxygen doxygen.conf
