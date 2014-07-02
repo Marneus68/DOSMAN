@@ -12,7 +12,7 @@ extern "C" {
 
 #include "constants.h"
 
-#include "InvalidEntryException.h"
+#include "Exceptions.h"
 
 namespace dosman {
     /* methods for singleton class EntryManager */
@@ -54,7 +54,7 @@ namespace dosman {
         try {
             Entry ent(path);
         } catch (InvalidEntryException e) {
-            std::cerr << e.getMessage() << std::endl;
+            std::cerr << e.what() << std::endl;
         }
 
         return 0;

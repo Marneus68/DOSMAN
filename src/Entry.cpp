@@ -10,7 +10,7 @@ extern "C" {
     #include <sys/stat.h>
 }
 
-#include "InvalidEntryException.h"
+#include "Exceptions.h"
 
 const std::string * dosman::Entry::getDriveCPath(void)
 {

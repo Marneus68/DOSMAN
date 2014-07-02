@@ -5,7 +5,7 @@ CC      := g++
 # Warning levels
 WARN    :=
 # Optimisation
-OFLAGS  := 
+OFLAGS  := -std=c++11
 # Link Options
 LDFLAGS := `pkg-config gtkmm-3.0 --cflags` `pkg-config glibmm-2.4 --cflags`
 # Link Libraries
