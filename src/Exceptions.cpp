@@ -31,3 +31,6 @@ dosman::InvalidPathException::InvalidPathException(const std::string & e_message
 dosman::InvalidEntryException::InvalidEntryException(const std::string & e_message) :
     DosmanException(e_message, "Invalid path provided to the class constructor. Aborting.\nDoes the config file contains the right path to the proper folder ?") {}
 
+dosman::InvalidConfigFileException::InvalidConfigFileException(const std::string & e_message) :
+    DosmanException(e_message, "Invalid configuration fil. Aborting.\nIs the config file accessible for reading and/or writing, and does it contain anything at all ?") {}
+

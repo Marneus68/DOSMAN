@@ -30,6 +30,11 @@ namespace dosman {
         public:
             InvalidPathException(const std::string & e_message = "");
     };
+
+    class InvalidConfigFileException : public DosmanException {
+        public:
+            InvalidConfigFileException(const std::string & e_message = "");
+    };
 } /* dosman */
 
 #endif /* __EXCEPTIONS_H__ */

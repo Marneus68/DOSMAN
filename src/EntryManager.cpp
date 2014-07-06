@@ -55,6 +55,8 @@ namespace dosman {
             Entry ent(path);
         } catch (InvalidEntryException e) {
             std::cerr << e.what() << std::endl;
+        } catch (InvalidConfigFileException e) {
+            std::cerr << e.what() << std::endl;
         }
 
         return 0;

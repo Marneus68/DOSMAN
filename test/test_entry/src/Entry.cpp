@@ -104,15 +104,12 @@ void dosman::Entry::construct(void)
 }
 
 
-    bool dosman::Entry::loadConfigurationFile(){
-      if(hasConf){
+bool dosman::Entry::loadConfigurationFile(){
+    if(hasConf){
         dosboxParser = new KeyValueParser("dosbox.conf");
         return 1;
-      }
-      else{
+    } else {
         return 0;
-      }
     }
-        
-
+}
 

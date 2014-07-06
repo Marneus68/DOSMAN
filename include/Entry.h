@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "KeyValueParser.h"
+
 namespace dosman {
     /**
     * @brief Class representing a program present in the DOSMAN folder.
@@ -13,16 +15,16 @@ namespace dosman {
     */
     class Entry {
         protected:
-            /* data */
             std::string name;
             std::string path;
             std::string imagePath;
+
+            KeyValueParser* config;
 
             bool hasImage;
             bool hasConf;
 
             void construct(void);
-    
         public:
             Entry (const std::string & e_path);
             Entry (const Entry& e_entry);
