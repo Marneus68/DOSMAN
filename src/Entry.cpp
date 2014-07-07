@@ -89,12 +89,14 @@ void dosman::Entry::construct(void)
         closedir (dir);
 
         if (!hasConf) throw InvalidEntryException();
+
         try {
+            std::string tmpPath(path + "/" + "dosbox.conf");
+            std::cout << tmpPath << std::endl;
             config = new KeyValueParser(path + "/" + "dosbox.conf");
         } catch (...) {
-            throw InvalidConfigFileException();
+            throw InvalidEntryException();
         }
-
     }
 }
 

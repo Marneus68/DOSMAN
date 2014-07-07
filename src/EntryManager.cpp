@@ -63,10 +63,13 @@ namespace dosman {
                                     std::pair<std::string, Entry > p = 
                                             make_pair(tmpName, tmpEntry);
                                     m_entries.insert(p);
-                                } catch (std::exception e) {
+                                } catch (InvalidEntryException e) {
                                     std::cerr << e.what() << std::endl;
-                                    std::cerr << "Something went wrong..." << std::endl;
-                                }
+                                    std::cerr << "Something went wrong... ENTRY EXCEPTION" << std::endl;
+                                } catch (InvalidConfigFileException e) {
+                                    std::cerr << e.what() << std::endl;
+                                    std::cerr << "Something went wrong... CONFIG FILE EXCEPTION" << std::endl;
+                                } 
                             }
                             closedir (subdir);
                         }
@@ -107,8 +110,7 @@ namespace dosman {
     }
 
     unsigned int EntryManager::getEntriesCount() {
-        //return m_entries.size();
-        return 0;
+        return m_entries.size();
     }
 } /* dosman */
 
