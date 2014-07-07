@@ -48,9 +48,11 @@ dosman::Entry::Entry(const std::string & e_path) :
 
 dosman::Entry::~Entry() {}
 
-dosman::Entry dosman::Entry::operator=(Entry& e_entry)
+dosman::Entry & dosman::Entry::operator=(Entry& e_entry)
 {
-    return e_entry;
+    path = e_entry.path;
+    name = e_entry.name;
+    return *this;
 }
 
 void dosman::Entry::construct(void)
@@ -89,9 +91,10 @@ void dosman::Entry::construct(void)
         if (!hasConf) throw InvalidEntryException();
         try {
             config = new KeyValueParser(path + "/" + "dosbox.conf");
-        } catch (DosmanException e) {
-
+        } catch (...) {
+            throw InvalidConfigFileException();
         }
+
     }
 }
 

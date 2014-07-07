@@ -30,7 +30,7 @@ namespace dosman {
             Entry (const Entry& e_entry);
             virtual ~Entry ();
     
-            Entry operator=(Entry& e_entry);
+            Entry & operator=(Entry& e_entry);
 
             /**
             * @brief Returns the name of the Entry

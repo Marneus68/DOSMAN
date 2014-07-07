@@ -32,6 +32,7 @@ namespace dosman{
             dosConfFile = parserIn.dosConfFile;
         } catch( std::exception &e ){
             std::cout << "Affectation Error" << e.what() << std::endl ;
+            throw InvalidConfigFileException(e.what());
         }
         return *this;
     }

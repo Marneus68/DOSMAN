@@ -30,7 +30,49 @@ namespace dosman {
         if(stat(m_dosman_path.c_str(),&st) == 0) {
             if(st.st_mode & S_IFDIR != 0) {
                 std::cout << m_dosman_path << " is present" << std::endl;
-                ftw(m_dosman_path.c_str(), walk, 0);
+
+                DIR *dir, *subdir;
+                struct dirent *ent, *subent;
+                bool    hasConf = false, 
+                        hasDrive = false;
+
+                if ((dir = opendir (m_dosman_path.c_str())) != NULL) { 
+                    while ((ent = readdir (dir)) != NULL) {
+                        if (ent->d_name[0] == '.') continue;
+                        std::string tmpPath = m_dosman_path + "/" + ent->d_name;
+                        if ((subdir = opendir(tmpPath.c_str())) != NULL) {
+                            std::cout << ent->d_name << std::endl;
+
+                            bool    hasConf     = false;
+                            while ((subent = readdir (subdir)) != NULL) {
+
+                                std::string filename(subent->d_name);
+                                std::string dosboxconf("dosbox.conf");
+                                
+                                if (filename.compare(0, dosboxconf.length(), dosboxconf) == 0) {
+                                    hasConf = true;
+                                    continue;
+                                }
+                            }
+
+                            if (hasConf) {
+                                try {
+                                    Entry tmpEntry(tmpPath);
+                                    std::string tmpName(ent->d_name);
+
+                                    std::pair<std::string, Entry > p = 
+                                            make_pair(tmpName, tmpEntry);
+                                    m_entries.insert(p);
+                                } catch (std::exception e) {
+                                    std::cerr << e.what() << std::endl;
+                                    std::cerr << "Something went wrong..." << std::endl;
+                                }
+                            }
+                            closedir (subdir);
+                        }
+                    }
+                    closedir (dir);
+                }
             }
         } else  {
             std::cout << m_dosman_path << " is NOT present" << std::endl;
@@ -40,27 +82,6 @@ namespace dosman {
 
     /* destructor */
     EntryManager::~EntryManager(void) {}
-
-    int EntryManager::walk(const char *fpath, const struct stat *sb, int typeflag) {
-        if (typeflag != FTW_D) return 0;
-        DIR *dir;
-        struct dirent *ent;
-        int score;
-
-        //std::cout << fpath << std::endl;
-
-        std::string path(fpath);
-        
-        try {
-            Entry ent(path);
-        } catch (InvalidEntryException e) {
-            std::cerr << e.what() << std::endl;
-        } catch (InvalidConfigFileException e) {
-            std::cerr << e.what() << std::endl;
-        }
-
-        return 0;
-    }
 
     /* method to initialize the singleton class */
     EntryManager* EntryManager::Initialize(void) {

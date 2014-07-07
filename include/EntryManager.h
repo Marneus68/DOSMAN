@@ -26,13 +26,11 @@ namespace dosman {
             /**
             * @brief Map of Entry.
             */
-            static std::map<std::string, Entry> m_entries;
+            std::map<std::string, Entry> m_entries;
             /**
             * @brief String containing the full absolute path to the .dosman directory
             */
             std::string m_dosman_path;
-
-            static int walk(const char *fpath, const struct stat *sb, int typeflag);
         public:
             static EntryManager *Initialize();
             static void kill(void);
@@ -45,3 +43,4 @@ namespace dosman {
 } /* dosman */
 
 #endif /* __ENTRYMANAGER_H__ */
+
