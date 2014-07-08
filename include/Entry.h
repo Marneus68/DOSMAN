@@ -35,19 +35,19 @@ namespace dosman {
             /**
             * @brief Returns the name of the Entry
             */
-            const std::string * getName(void);
+            const char * getName(void);
             /**
             * @brief Returns the path to the Entry
             */
-            const std::string * getPath(void);
+            const char * getPath(void);
             /**
             * @brief Returns a path to the associated image if it exist. Returns null otherwise.
             */
-            const std::string * getImagePath(void);
+            const char * getImagePath(void);
             /**
             * @brief Returns the path to C drive of the Entry
             */
-            const std::string * getDriveCPath(void);
+            const char * getDriveCPath(void);
     };
 } /* dosman */
 

@@ -12,7 +12,6 @@ namespace dosman {
 
             DosmanException(const std::string & e_message, const std::string & e_predef_message);
         public:
-            DosmanException(const std::string & e_message = "");
             DosmanException(const DosmanException & e_dosmanexception);
             ~DosmanException() throw();
 
@@ -34,6 +33,11 @@ namespace dosman {
     class InvalidConfigFileException : public DosmanException {
         public:
             InvalidConfigFileException(const std::string & e_message = "");
+    };
+
+    class DOSBoxSpawnException : public DosmanException {
+        public:
+            DOSBoxSpawnException(const std::string & e_message = "");
     };
 } /* dosman */
 

@@ -12,24 +12,24 @@ extern "C" {
 
 #include "Exceptions.h"
 
-const std::string * dosman::Entry::getDriveCPath(void)
+const char * dosman::Entry::getDriveCPath(void)
 {
-    return &path;
+    return path.c_str();
 }
 
-const std::string * dosman::Entry::getImagePath(void)
+const char * dosman::Entry::getImagePath(void)
 {
-    return &imagePath; 
+    return imagePath.c_str(); 
 }
 
-const std::string * dosman::Entry::getName(void)
+const char * dosman::Entry::getName(void)
 {
-    return &name; 
+    return name.c_str(); 
 }
 
-const std::string * dosman::Entry::getPath(void)
+const char * dosman::Entry::getPath(void)
 {
-    return &path;
+    return path.c_str();
 }
 
 dosman::Entry::Entry(const Entry& e_entry) :
@@ -72,10 +72,6 @@ void dosman::Entry::construct(void)
             std::string imagefile("image.");
             std::string dosboxconf("dosbox.conf");
 
-            std::cout << path << " : " << ent->d_name <<  " " 
-                    << filename.compare(0, imagefile.length(), imagefile) 
-                    << std::endl;
-
             if (filename.compare(0, imagefile.length(), imagefile) == -6) {
                 hasImage = true;
                 continue;
@@ -88,15 +84,14 @@ void dosman::Entry::construct(void)
         }
         closedir (dir);
 
-        if (!hasConf) throw InvalidEntryException();
+        if (!hasConf) throw InvalidEntryException(path);
 
         try {
-            std::string tmpPath(path + "/" + "dosbox.conf");
-            std::cout << tmpPath << std::endl;
             config = new KeyValueParser(path + "/" + "dosbox.conf");
         } catch (...) {
-            throw InvalidEntryException();
+            throw InvalidConfigFileException(path);
         }
+
     }
 }
 

@@ -1,34 +1,27 @@
 #include "DOSBoxCaller.h"
 
-/* methods for singleton class DOSBoxCaller */
+#include <string>
 
-/* singleton initialisation */
-dosman::DOSBoxCaller *dosman::DOSBoxCaller::_singleton = NULL;
-
-/* constructor */
-dosman::DOSBoxCaller::DOSBoxCaller(const std::string & e_dosman_dir_path) :
-    dosman_dir_path(e_dosman_dir_path) {}
-
-/* method to initialize the singleton class */
-dosman::DOSBoxCaller* dosman::DOSBoxCaller::Initialize(const std::string & e_dosman_dir_path) {
-    if (_singleton == NULL) {
-        _singleton =  new DOSBoxCaller(e_dosman_dir_path);
-    }
-    return _singleton;
+extern "C" {
+    #include <spawn.h>
+    #include <unistd.h>
 }
-
-/* kill the singleton */
-void dosman::DOSBoxCaller::kill(void) {
-    if (_singleton != NULL) {
-        delete _singleton;
-        _singleton = NULL;
-    }
-}
-
-dosman::DOSBoxCaller::~DOSBoxCaller() {}
 
 void dosman::DOSBoxCaller::run(const Entry & e_entry)
 {
+    pid_t processID;
+    std::string fullConfigPath(((char*)((Entry)e_entry).getPath()));
+    fullConfigPath += "/";
+    fullConfigPath += "dosbox.conf";
+    char *argV[] = {"dosbox", "-conf", (char*)fullConfigPath.c_str() ,(char *) 0};
+    int status = -1;
 
+    std::cout << fullConfigPath << std::endl;
+    status = posix_spawn(&processID,"dosbox",NULL,NULL,argV,environ);
+
+    if(status == 0)
+        std::cout << "Dosbox launched." << std::endl;
+    else
+        std::cout << "Something went wrong somewhere." << std::endl;
 }
 

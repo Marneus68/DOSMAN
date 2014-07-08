@@ -29,7 +29,7 @@ namespace dosman {
         struct stat st;
         if(stat(m_dosman_path.c_str(),&st) == 0) {
             if(st.st_mode & S_IFDIR != 0) {
-                std::cout << m_dosman_path << " is present" << std::endl;
+                std::cout << m_dosman_path << " is present." << std::endl;
 
                 DIR *dir, *subdir;
                 struct dirent *ent, *subent;
@@ -41,7 +41,6 @@ namespace dosman {
                         if (ent->d_name[0] == '.') continue;
                         std::string tmpPath = m_dosman_path + "/" + ent->d_name;
                         if ((subdir = opendir(tmpPath.c_str())) != NULL) {
-                            std::cout << ent->d_name << std::endl;
 
                             bool    hasConf     = false;
                             while ((subent = readdir (subdir)) != NULL) {
@@ -65,10 +64,8 @@ namespace dosman {
                                     m_entries.insert(p);
                                 } catch (InvalidEntryException e) {
                                     std::cerr << e.what() << std::endl;
-                                    std::cerr << "Something went wrong... ENTRY EXCEPTION" << std::endl;
                                 } catch (InvalidConfigFileException e) {
                                     std::cerr << e.what() << std::endl;
-                                    std::cerr << "Something went wrong... CONFIG FILE EXCEPTION" << std::endl;
                                 } 
                             }
                             closedir (subdir);
@@ -78,8 +75,8 @@ namespace dosman {
                 }
             }
         } else  {
-            std::cout << m_dosman_path << " is NOT present" << std::endl;
-            std::cout << m_dosman_path << " has been created" << std::endl;
+            std::cout << m_dosman_path << " is NOT present ! " 
+                    << m_dosman_path << " has been created." << std::endl;
         }
     }
 
