@@ -15,7 +15,6 @@ extern "C" {
 #include "Exceptions.h"
 
 namespace dosman {
-    /* methods for singleton class EntryManager */
 
     /* singleton initialisation */
     EntryManager *EntryManager::_singleton = NULL;
@@ -44,7 +43,7 @@ namespace dosman {
                             while ((subent = readdir (subdir)) != NULL) {
                                 if (subent->d_name[0] == '.') continue;
                                 std::string filename(subent->d_name);
-                                std::string dosboxconf("dosbox.conf");
+                                std::string dosboxconf(DOSMAN_ENTRY_CONF);
                                 
                                 if (filename.compare(0, dosboxconf.length(), dosboxconf) == 0) {
                                     try {
@@ -61,9 +60,7 @@ namespace dosman {
                             }
                             closedir (subdir);
                         }
-
                     }
-
                     closedir (dir);
                 }
             }
@@ -73,7 +70,6 @@ namespace dosman {
         }
     }
 
-    /* destructor */
     EntryManager::~EntryManager(void) {}
 
     /* method to initialize the singleton class */

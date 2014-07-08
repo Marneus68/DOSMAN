@@ -10,6 +10,8 @@ extern "C" {
     #include <sys/stat.h>
 }
 
+#include "constants.h"
+
 #include "Exceptions.h"
 
 const char * dosman::Entry::getDriveCPath(void)
@@ -70,10 +72,10 @@ void dosman::Entry::construct(void)
             if (ent->d_name[0] == '.') continue;
 
             std::string filename(ent->d_name);
-            std::string imagefile("image.");
-            std::string dosboxconf("dosbox.conf");
+            std::string imagefile(DOSMAN_ENTRY_COVER);
+            std::string dosboxconf(DOSMAN_ENTRY_CONF);
 
-            if (filename.compare(0, imagefile.length(), imagefile) == -6) {
+            if (filename.compare(0, imagefile.length(), imagefile) == 0) {
                 hasImage = true;
                 imagePath = filename;
                 continue;
@@ -89,13 +91,10 @@ void dosman::Entry::construct(void)
         if (!hasConf) throw InvalidEntryException(path);
 
         try {
-            config = new KeyValueParser(path + "/" + "dosbox.conf");
+            config = new KeyValueParser(path + "/" + DOSMAN_ENTRY_CONF);
         } catch (...) {
             throw InvalidConfigFileException(path);
         }
     }
-    std::cout << "Path: " << path << std::endl;
-    std::cout << "Name: " << name << std::endl;
-    std::cout << "Image: " << imagePath << std::endl;
 }
 
