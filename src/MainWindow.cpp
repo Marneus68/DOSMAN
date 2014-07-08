@@ -23,6 +23,8 @@ dosman::MainWindow::MainWindow() :
 
     m_entry_manager = EntryManager::Initialize();
 
+    std::cout << m_entry_manager->getEntriesCount() << std::endl;
+
     // Collection page
     m_flow_box.set_homogeneous(true);
     m_flow_box.set_selection_mode(Gtk::SELECTION_NONE);

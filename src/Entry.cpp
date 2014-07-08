@@ -43,6 +43,8 @@ dosman::Entry::Entry(const Entry& e_entry) :
 dosman::Entry::Entry(const std::string & e_path) :
     path(e_path)
 {
+    name = path.substr(path.find_last_of("\\/")+1, path.size());
+    imagePath = "";
     construct();
 }
 
@@ -74,6 +76,7 @@ void dosman::Entry::construct(void)
 
             if (filename.compare(0, imagefile.length(), imagefile) == -6) {
                 hasImage = true;
+                imagePath = filename;
                 continue;
             }
 
