@@ -33,8 +33,6 @@ namespace dosman {
 
                 DIR *dir, *subdir;
                 struct dirent *ent, *subent;
-                bool    hasConf = false, 
-                        hasDrive = false;
 
                 if ((dir = opendir (m_dosman_path.c_str())) != NULL) { 
                     while ((ent = readdir (dir)) != NULL) {
@@ -44,33 +42,28 @@ namespace dosman {
 
                             bool    hasConf     = false;
                             while ((subent = readdir (subdir)) != NULL) {
-
+                                if (subent->d_name[0] == '.') continue;
                                 std::string filename(subent->d_name);
                                 std::string dosboxconf("dosbox.conf");
                                 
                                 if (filename.compare(0, dosboxconf.length(), dosboxconf) == 0) {
-                                    hasConf = true;
-                                    continue;
+                                    try {
+                                        std::pair<std::string, Entry > p = 
+                                            make_pair(std::string(ent->d_name), Entry(tmpPath));
+                                        m_entries.insert(p);
+                                    } catch (InvalidEntryException e) {
+                                        std::cerr << e.what() << std::endl;
+                                    } catch (InvalidConfigFileException e) {
+                                        std::cerr << e.what() << std::endl;
+                                    } 
+                                    break;
                                 }
-                            }
-
-                            if (hasConf) {
-                                try {
-                                    Entry tmpEntry(tmpPath);
-                                    std::string tmpName(ent->d_name);
-
-                                    std::pair<std::string, Entry > p = 
-                                            make_pair(tmpName, tmpEntry);
-                                    m_entries.insert(p);
-                                } catch (InvalidEntryException e) {
-                                    std::cerr << e.what() << std::endl;
-                                } catch (InvalidConfigFileException e) {
-                                    std::cerr << e.what() << std::endl;
-                                } 
                             }
                             closedir (subdir);
                         }
+
                     }
+
                     closedir (dir);
                 }
             }

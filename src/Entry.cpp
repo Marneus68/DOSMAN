@@ -35,10 +35,8 @@ const char * dosman::Entry::getPath(void)
 dosman::Entry::Entry(const Entry& e_entry) :
     name(e_entry.name),
     path(e_entry.path),
-    imagePath(e_entry.imagePath)
-{
-    construct();
-}
+    imagePath(e_entry.imagePath),
+    config(e_entry.config) {}
 
 dosman::Entry::Entry(const std::string & e_path) :
     path(e_path)
@@ -54,6 +52,7 @@ dosman::Entry & dosman::Entry::operator=(Entry& e_entry)
 {
     path = e_entry.path;
     name = e_entry.name;
+    config = e_entry.config;
     return *this;
 }
 
@@ -94,7 +93,9 @@ void dosman::Entry::construct(void)
         } catch (...) {
             throw InvalidConfigFileException(path);
         }
-
     }
+    std::cout << "Path: " << path << std::endl;
+    std::cout << "Name: " << name << std::endl;
+    std::cout << "Image: " << imagePath << std::endl;
 }
 
