@@ -24,8 +24,8 @@ dosman::MainWindow::MainWindow() :
     m_entry_manager = EntryManager::Initialize();
 
     // Collection page
-    m_flow_box.set_vexpand(false);
-    m_flow_box.set_hexpand(false);
+    //m_flow_box.set_vexpand(false);
+    //m_flow_box.set_hexpand(true);
     m_flow_box.set_homogeneous(true);
     m_flow_box.set_selection_mode(Gtk::SELECTION_NONE);
     m_flow_box.set_resize_mode(Gtk::RESIZE_PARENT);
