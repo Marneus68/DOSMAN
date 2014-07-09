@@ -63,7 +63,7 @@ namespace dosman {
             */
             bool containsImage(void);
             /**
-            * @brief Returns true if 
+            * @brief Run the entru with DOSBox
             */
             void run(void);
     };

@@ -85,17 +85,23 @@ void dosman::MainWindow::update_collection_widget() {
 
             Gtk::Button*    tmp_button = new Gtk::Button();
             Gtk::Image*     tmp_image;
+
             tmp_button->set_vexpand(false);
             tmp_button->set_hexpand(false);
+
             if (tmp_entry.containsImage()) {
                 tmp_image = new Gtk::Image(tmp_entry.getImagePath());
             } else {
                 tmp_image = new Gtk::Image("./img/diskicon.png");
             }
-            //tmp_button->set_label(tmp_entry.getName());
+
             tmp_button->add(*tmp_image);
             tmp_button->set_size_request(128,128);
+
+            tmp_button->signal_clicked().connect( sigc::mem_fun(m_entry_manager->getEntryMap()->at(tmp_entry.getName()), &Entry::run));
+
             m_buttons[tmp_entry.getName()] = tmp_button;
+
             m_flow_box.add(*m_buttons[tmp_entry.getName()]);
         }
     } else {

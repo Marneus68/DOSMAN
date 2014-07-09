@@ -38,7 +38,7 @@ namespace dosman {
 
             unsigned int getEntriesCount();
 
-            Entry * getEntryWithName(const std::string & e_name);
+            Entry * getEntryWithName(const char * e_name);
             EntryMap * getEntryMap(void);
 
 

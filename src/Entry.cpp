@@ -130,7 +130,7 @@ bool dosman::Entry::containsImage()
     return hasImage;
 }
 
-void dosman::Entry::run(void)
+void dosman::Entry::run()
 {
     pid_t processID;
     char *argV[] = {"dosbox", "-conf", (char*)getConfPath(), "-conf", (char*)getRunConfPath(), (char *) 0};
