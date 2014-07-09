@@ -8,6 +8,9 @@ extern "C" {
     #include <stdlib.h>
     #include <unistd.h>
     #include <sys/stat.h>
+
+    #include <spawn.h>
+    #include <unistd.h>
 }
 
 #include "constants.h"
@@ -32,6 +35,18 @@ const char * dosman::Entry::getName(void)
 const char * dosman::Entry::getPath(void)
 {
     return path.c_str();
+}
+
+const char * dosman::Entry::getConfPath(void)
+{
+    std::string tmp(path + "/" + DOSMAN_ENTRY_CONF);
+    return tmp.c_str();
+}
+
+const char * dosman::Entry::getRunConfPath(void)
+{
+    std::string tmp(path + "/" + DOSMAN_ENTRY_RUNC);
+    return tmp.c_str();
 }
 
 dosman::Entry::Entry(const Entry& e_entry) :
@@ -109,9 +124,25 @@ void dosman::Entry::construct(void)
         }
     }
 }
+
 bool dosman::Entry::containsImage()
 {
     return hasImage;
 }
 
+void dosman::Entry::run(void)
+{
+    pid_t processID;
+    char *argV[] = {"dosbox", "-conf", (char*)getConfPath(), "-conf", (char*)getRunConfPath(), (char *) 0};
+    int status = -1;
+
+    std::cout << getConfPath() << std::endl;
+    std::cout << getRunConfPath() << std::endl;
+    status = posix_spawn(&processID,"dosbox",NULL,NULL,argV,environ);
+
+    if(status == 0)
+        std::cout << "Dosbox launched." << std::endl;
+    else
+        std::cout << "Something went wrong somewhere." << std::endl;
+}
 

@@ -47,14 +47,25 @@ namespace dosman {
             */
             const char * getImagePath(void);
             /**
-            * @brief Returns the path to C drive of the Entry
+            * @brief returns the path to c drive of the entry
             */
             const char * getDriveCPath(void);
             /**
-            * @brief Returns true if dsffsdfdssfd
+            * @brief returns the path to the configuration file
+            */
+            const char * getConfPath(void);
+            /**
+            * @brief returns the path to the autorun configuration path
+            */
+            const char * getRunConfPath(void);
+            /**
+            * @brief Returns true if the entry has a cover image
             */
             bool containsImage(void);
-
+            /**
+            * @brief Returns true if 
+            */
+            void run(void);
     };
 } /* dosman */
 
