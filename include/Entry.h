@@ -32,6 +32,8 @@ namespace dosman {
     
             Entry & operator=(Entry& e_entry);
 
+            friend std::ostream& operator<<( std::ostream& out , const Entry& e_entry );
+
             /**
             * @brief Returns the name of the Entry
             */
@@ -48,6 +50,11 @@ namespace dosman {
             * @brief Returns the path to C drive of the Entry
             */
             const char * getDriveCPath(void);
+            /**
+            * @brief Returns true if dsffsdfdssfd
+            */
+            bool containsImage(void);
+
     };
 } /* dosman */
 

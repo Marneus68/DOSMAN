@@ -5,11 +5,9 @@
 #include <string>
 #include <map>
 
-extern "C" {
-    #include <ftw.h>
-}
-
 #include "Entry.h"
+
+typedef std::map<std::string, dosman::Entry> EntryMap;
 
 namespace dosman {
     /**
@@ -36,9 +34,14 @@ namespace dosman {
             static void kill(void);
 
             void addEntry(const Entry & e_entry);
-            Entry * getEntryWithName(const std::string & e_name);
             bool isNameFree(const std::string & e_name);
+
             unsigned int getEntriesCount();
+
+            Entry * getEntryWithName(const std::string & e_name);
+            EntryMap * getEntryMap(void);
+
+
     };
 } /* dosman */
 

@@ -23,11 +23,19 @@ dosman::MainWindow::MainWindow() :
 
     m_entry_manager = EntryManager::Initialize();
 
-    std::cout << m_entry_manager->getEntriesCount() << std::endl;
-
     // Collection page
+    m_flow_box.set_vexpand(false);
+    m_flow_box.set_hexpand(false);
     m_flow_box.set_homogeneous(true);
     m_flow_box.set_selection_mode(Gtk::SELECTION_NONE);
+    m_flow_box.set_resize_mode(Gtk::RESIZE_PARENT);
+    m_flow_box.set_halign(Gtk::ALIGN_START);
+    m_flow_box.set_valign(Gtk::ALIGN_START);
+
+    m_scrolled_window.add(m_flow_box);
+
+    //m_collection_box.add(m_flow_box);
+    m_collection_box.pack_start(m_scrolled_window, true, true);
 
     update_collection_widget();
 
@@ -58,11 +66,11 @@ dosman::MainWindow::MainWindow() :
 dosman::MainWindow::~MainWindow() {}
 
 void dosman::MainWindow::on_open_new_program_dialog() {
-    std::cerr << "Open the \"New Entry\" wizard" << std::endl;
+    std::cout << "Open the \"New Entry\" wizard" << std::endl;
 }
 
 void dosman::MainWindow::on_open_pref_window() {
-    std::cerr << "Open the preferences window" << std::endl;
+    std::cout << "Open the preferences window" << std::endl;
 }
 
 void dosman::MainWindow::on_quit() {
@@ -70,12 +78,37 @@ void dosman::MainWindow::on_quit() {
 }
 
 void dosman::MainWindow::update_collection_widget() {
-    // Remove the content of the m_collection_box
     if (m_entry_manager->getEntriesCount()) {
-        //m_collection_box.add(    
+        for (EntryMap::const_iterator i = m_entry_manager->getEntryMap()->begin(); i != m_entry_manager->getEntryMap()->end(); ++i) {
+            std::cout << i->first << ": " << i->second << std::endl;
+            Entry tmp_entry = (Entry) i->second;
+
+            Gtk::Button*    tmp_button = new Gtk::Button();
+            Gtk::Image*     tmp_image;
+            tmp_button->set_vexpand(false);
+            tmp_button->set_hexpand(false);
+            if (tmp_entry.containsImage()) {
+                tmp_image = new Gtk::Image(tmp_entry.getImagePath());
+            } else {
+                tmp_image = new Gtk::Image("./img/diskicon.png");
+            }
+            //tmp_button->set_label(tmp_entry.getName());
+            tmp_button->add(*tmp_image);
+            tmp_button->set_size_request(128,128);
+            m_buttons[tmp_entry.getName()] = tmp_button;
+            m_flow_box.add(*m_buttons[tmp_entry.getName()]);
+        }
     } else {
-        //Create the content of the flow box
-        m_collection_box.add(m_flow_box);
+        // No entries to show
+    }
+}
+
+void dosman::MainWindow::update_edition_widget()
+{
+    if (m_entry_manager->getEntriesCount()) {
+        // Entries to show
+    } else {
+        // No entries to show
     }
 }
 

@@ -38,7 +38,9 @@ dosman::Entry::Entry(const Entry& e_entry) :
     name(e_entry.name),
     path(e_entry.path),
     imagePath(e_entry.imagePath),
-    config(e_entry.config) {}
+    config(e_entry.config),
+    hasConf(e_entry.hasConf),
+    hasImage(e_entry.hasImage) {}
 
 dosman::Entry::Entry(const std::string & e_path) :
     path(e_path)
@@ -55,7 +57,17 @@ dosman::Entry & dosman::Entry::operator=(Entry& e_entry)
     path = e_entry.path;
     name = e_entry.name;
     config = e_entry.config;
+
+    hasImage = e_entry.hasImage;
+    hasConf = e_entry.hasConf;
     return *this;
+}
+
+std::ostream& dosman::operator<<( std::ostream& out , const dosman::Entry& e_entry )
+{
+    return out << std::endl << "> Entry name : " << ((dosman::Entry&) e_entry).getName() << std::endl 
+            << "> path : " << ((dosman::Entry&) e_entry).getPath() << std::endl 
+            << "> image : " << ((dosman::Entry&) e_entry).getImagePath() << std::endl;
 }
 
 void dosman::Entry::construct(void)
@@ -77,7 +89,7 @@ void dosman::Entry::construct(void)
 
             if (filename.compare(0, imagefile.length(), imagefile) == 0) {
                 hasImage = true;
-                imagePath = filename;
+                imagePath = path + "/" + filename;
                 continue;
             }
 
@@ -97,4 +109,9 @@ void dosman::Entry::construct(void)
         }
     }
 }
+bool dosman::Entry::containsImage()
+{
+    return hasImage;
+}
+
 

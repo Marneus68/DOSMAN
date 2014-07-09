@@ -98,5 +98,10 @@ namespace dosman {
     unsigned int EntryManager::getEntriesCount() {
         return m_entries.size();
     }
+
+    EntryMap * EntryManager::getEntryMap() {
+        return &m_entries;
+    }
+
 } /* dosman */
 

@@ -12,6 +12,9 @@
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/flowbox.h>
 #include <gtkmm/paned.h>
+#include <gtkmm/image.h>
+
+#include <map>
 
 #include "EntryManager.h"
 
@@ -29,6 +32,7 @@ namespace dosman {
             void on_quit();
 
             void update_collection_widget();
+            void update_edition_widget();
 
             unsigned int                    m_entries_num;
 
@@ -46,10 +50,14 @@ namespace dosman {
 
             Gtk::Label                      m_label_col_empty_title,
                                             m_label_col_empty_body;
-            
-            /* actual content for the stackswitcher */
+
             Gtk::ScrolledWindow             m_scrolled_window;
             Gtk::FlowBox                    m_flow_box;
+
+            Gtk::Image                      m_default_image;
+
+            std::map<std::string, Gtk::Button*> m_buttons;
+            std::map<std::string, Gtk::Image*>  m_images;
     }; /* MainWindow */
 } /* dosman */
 
