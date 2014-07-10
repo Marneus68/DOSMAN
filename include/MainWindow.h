@@ -7,12 +7,15 @@
 #include <gtkmm/stackswitcher.h>
 #include <gtkmm/box.h>
 #include <gtkmm/button.h>
+#include <gtkmm/buttonbox.h>
 #include <gtkmm/label.h>
 
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/flowbox.h>
 #include <gtkmm/paned.h>
 #include <gtkmm/image.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/liststore.h>
 
 #include <map>
 
@@ -45,19 +48,34 @@ namespace dosman {
                                             m_content_box,
                                             m_collection_box,
                                             m_edition_box;
+            Gtk::ButtonBox                  m_edit_buttons_box;
             Gtk::StackSwitcher              m_stack_switcher;
             Gtk::Stack                      m_stack;
-
-            Gtk::Label                      m_label_col_empty_title,
-                                            m_label_col_empty_body;
-
+            Gtk::Button                     m_edit_add,
+                                            m_edit_remove;
             Gtk::ScrolledWindow             m_scrolled_window;
             Gtk::FlowBox                    m_flow_box;
-
             Gtk::Image                      m_default_image;
 
             std::map<std::string, Gtk::Button*> m_buttons;
             std::map<std::string, Gtk::Image*>  m_images;
+
+
+            class ModelColumns : public Gtk::TreeModelColumnRecord {
+                public:
+                    ModelColumns () { 
+                        add(m_col_name);
+                    }
+
+                    Gtk::TreeModelColumn<Glib::ustring> m_col_name;
+            };
+
+            ModelColumns m_columns;
+
+            Gtk::TreeView                   m_treeview;
+            //Gtk::ListStore*                 m_treemodel;
+            Glib::RefPtr<Gtk::ListStore> m_reftreemodel;
+
     }; /* MainWindow */
 } /* dosman */
 

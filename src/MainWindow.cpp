@@ -1,16 +1,18 @@
 #include "MainWindow.h"
 #include <iostream>
 
+#include <gtkmm/stock.h>
 #include <gtkmm/enums.h>
 
 dosman::MainWindow::MainWindow() :
     m_header_box(Gtk::ORIENTATION_HORIZONTAL),
     m_content_box(Gtk::ORIENTATION_VERTICAL),
     m_collection_box(Gtk::ORIENTATION_VERTICAL),
-    m_edition_box(Gtk::ORIENTATION_HORIZONTAL),
-    m_label_col_empty_title("Nothing to see here !"),
-    m_label_col_empty_body("Click here to add your first DOS application to your collection."),
-    m_entries_num(0)
+    m_edition_box(Gtk::ORIENTATION_VERTICAL),
+    m_edit_buttons_box(Gtk::ORIENTATION_HORIZONTAL),
+    m_entries_num(0),
+    m_edit_add(Gtk::Stock::ADD),
+    m_edit_remove(Gtk::Stock::REMOVE)
 {
     set_title("DOSMAN");
     set_border_width(10);
@@ -24,8 +26,6 @@ dosman::MainWindow::MainWindow() :
     m_entry_manager = EntryManager::Initialize();
 
     // Collection page
-    //m_flow_box.set_vexpand(false);
-    //m_flow_box.set_hexpand(true);
     m_flow_box.set_homogeneous(true);
     m_flow_box.set_selection_mode(Gtk::SELECTION_NONE);
     m_flow_box.set_resize_mode(Gtk::RESIZE_PARENT);
@@ -34,16 +34,24 @@ dosman::MainWindow::MainWindow() :
 
     m_scrolled_window.add(m_flow_box);
 
-    //m_collection_box.add(m_flow_box);
     m_collection_box.pack_start(m_scrolled_window, true, true);
 
     update_collection_widget();
 
     // Edition page
-    //m_edition_box.add(m_label_bar);
-    m_label_col_empty_title.set_use_markup(true);
-    m_label_col_empty_title.set_markup("<big>Nothing to see here !</big>");
-    m_edition_box.add(m_label_col_empty_title);
+    m_reftreemodel = Gtk::ListStore::create(m_columns);
+    m_treeview.set_model(m_reftreemodel);
+    m_treeview.append_column("Name", m_columns.m_col_name);
+
+    m_edit_buttons_box.pack_start(m_edit_remove);
+    m_edit_buttons_box.pack_start(m_edit_add);
+
+    m_edit_buttons_box.set_layout(Gtk::BUTTONBOX_EXPAND);
+
+    m_edition_box.pack_start(m_treeview);
+    m_edition_box.pack_start(m_edit_buttons_box, Gtk::PACK_SHRINK);
+
+    update_edition_widget();
 
     m_stack.set_transition_type(Gtk::STACK_TRANSITION_TYPE_SLIDE_LEFT_RIGHT);
     m_stack.set_transition_duration(500);
@@ -78,6 +86,10 @@ void dosman::MainWindow::on_quit() {
 }
 
 void dosman::MainWindow::update_collection_widget() {
+    
+    // clear the content of the m_flow_box, m_buttons, m_images and repopulate it
+    // according to the content of the EntryManager
+
     if (m_entry_manager->getEntriesCount()) {
         for (EntryMap::const_iterator i = m_entry_manager->getEntryMap()->begin(); i != m_entry_manager->getEntryMap()->end(); ++i) {
             std::cout << i->first << ": " << i->second << std::endl;
@@ -91,11 +103,12 @@ void dosman::MainWindow::update_collection_widget() {
 
             if (tmp_entry.containsImage()) {
                 tmp_image = new Gtk::Image(tmp_entry.getImagePath());
+                tmp_button->add(*tmp_image);
             } else {
-                tmp_image = new Gtk::Image("./img/diskicon.png");
+                //tmp_image = new Gtk::Image("./img/diskicon.png");
+                tmp_button->set_label(tmp_entry.getName());
             }
 
-            tmp_button->add(*tmp_image);
             tmp_button->set_size_request(128,128);
 
             tmp_button->signal_clicked().connect( sigc::mem_fun(m_entry_manager->getEntryMap()->at(tmp_entry.getName()), &Entry::run));
@@ -104,17 +117,18 @@ void dosman::MainWindow::update_collection_widget() {
 
             m_flow_box.add(*m_buttons[tmp_entry.getName()]);
         }
-    } else {
-        // No entries to show
     }
 }
 
 void dosman::MainWindow::update_edition_widget()
 {
     if (m_entry_manager->getEntriesCount()) {
-        // Entries to show
-    } else {
-        // No entries to show
+        Gtk::TreeModel::Row row;
+        for (EntryMap::const_iterator i = m_entry_manager->getEntryMap()->begin(); i != m_entry_manager->getEntryMap()->end(); ++i) {
+            row = *(m_reftreemodel->append());
+            Entry tmp_entry = (Entry) i->second;
+            row[m_columns.m_col_name] = tmp_entry.getName();
+        }
     }
 }
 
