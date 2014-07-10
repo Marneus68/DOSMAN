@@ -30,9 +30,10 @@ namespace dosman {
 
         protected:
             // Signal Handlers
-            void on_open_new_program_dialog();
-            void on_open_pref_window();
+            void on_add_new_entry();
+            void on_remove_selected_entry();
             void on_quit();
+            void on_row_selected();
 
             void update_collection_widget();
             void update_edition_widget();
@@ -47,7 +48,9 @@ namespace dosman {
             Gtk::Box                        m_header_box,
                                             m_content_box,
                                             m_collection_box,
-                                            m_edition_box;
+                                            m_edition_box,
+                                            m_edition_entry_box;
+            Gtk::HPaned                     m_edition_panned;
             Gtk::ButtonBox                  m_edit_buttons_box;
             Gtk::StackSwitcher              m_stack_switcher;
             Gtk::Stack                      m_stack;

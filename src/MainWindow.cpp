@@ -9,6 +9,7 @@ dosman::MainWindow::MainWindow() :
     m_content_box(Gtk::ORIENTATION_VERTICAL),
     m_collection_box(Gtk::ORIENTATION_VERTICAL),
     m_edition_box(Gtk::ORIENTATION_VERTICAL),
+    m_edition_entry_box(Gtk::ORIENTATION_VERTICAL),
     m_edit_buttons_box(Gtk::ORIENTATION_HORIZONTAL),
     m_entries_num(0),
     m_edit_add(Gtk::Stock::ADD),
@@ -33,7 +34,7 @@ dosman::MainWindow::MainWindow() :
     m_flow_box.set_valign(Gtk::ALIGN_START);
 
     m_scrolled_window.add(m_flow_box);
-
+    
     m_collection_box.pack_start(m_scrolled_window, true, true);
 
     update_collection_widget();
@@ -43,13 +44,28 @@ dosman::MainWindow::MainWindow() :
     m_treeview.set_model(m_reftreemodel);
     m_treeview.append_column("Name", m_columns.m_col_name);
 
+    /*
+    m_treeview.signal_row_activated().connect( sigc::mem_fun(*this,
+              &MainWindow::on_row_selected) );
+    */
+    m_treeview.signal_cursor_changed().connect(sigc::mem_fun(*this,
+              &MainWindow::on_row_selected) );
+
     m_edit_buttons_box.pack_start(m_edit_remove);
     m_edit_buttons_box.pack_start(m_edit_add);
+
+    m_edit_add.signal_clicked().connect( sigc::mem_fun(*this, 
+            &MainWindow::on_add_new_entry));
+    m_edit_remove.signal_clicked().connect( sigc::mem_fun(*this, 
+            &MainWindow::on_remove_selected_entry));
 
     m_edit_buttons_box.set_layout(Gtk::BUTTONBOX_EXPAND);
 
     m_edition_box.pack_start(m_treeview);
     m_edition_box.pack_start(m_edit_buttons_box, Gtk::PACK_SHRINK);
+
+    m_edition_panned.pack1(m_edition_box, Gtk::SHRINK);
+    m_edition_panned.add2(m_edition_entry_box);
 
     update_edition_widget();
 
@@ -57,7 +73,7 @@ dosman::MainWindow::MainWindow() :
     m_stack.set_transition_duration(500);
 
     m_stack.add(m_collection_box, "m_collection_foo", "Collection"); 
-    m_stack.add(m_edition_box, "m_edition_bar", "Edition"); // SHOULD BE USING A PANED CONTAINER
+    m_stack.add(m_edition_panned, "m_edition_bar", "Edition"); // SHOULD BE USING A PANED CONTAINER
 
     m_stack_switcher.set_stack(m_stack);
 
@@ -73,22 +89,51 @@ dosman::MainWindow::MainWindow() :
 
 dosman::MainWindow::~MainWindow() {}
 
-void dosman::MainWindow::on_open_new_program_dialog() {
-    std::cout << "Open the \"New Entry\" wizard" << std::endl;
+void dosman::MainWindow::on_add_new_entry() {
+    std::cout << "Create a new Entry" << std::endl;
+    Gtk::Button* useless = new Gtk::Button("lol");
+    useless->set_vexpand(true);
+    useless->set_hexpand(true);
+    useless->set_size_request(128,128);
+    m_flow_box.add(*useless);
+    m_flow_box.show_all();
 }
 
-void dosman::MainWindow::on_open_pref_window() {
-    std::cout << "Open the preferences window" << std::endl;
+void dosman::MainWindow::on_remove_selected_entry() {
+    Glib::RefPtr<Gtk::TreeSelection> selection = m_treeview.get_selection();
+    Gtk::TreeModel::iterator selectedRow = selection->get_selected();
+    Gtk::TreeModel::Row row = *selectedRow;
+    Glib::ustring port = row.get_value(m_columns.m_col_name);
+    std::cout << "Deleting " << port.data() << std::endl;
+
+    std::string tmp_key(port.data());
+    if (tmp_key.compare("") == 0)  return;
+    m_flow_box.remove(*m_buttons[tmp_key.c_str()]);
+    m_flow_box.show_all();
 }
 
 void dosman::MainWindow::on_quit() {
     hide(); // Quit the app by hiding the main window
 }
 
+void dosman::MainWindow::on_row_selected()
+{
+    std::cout << "top lel" << std::endl;
+}
+
 void dosman::MainWindow::update_collection_widget() {
     
     // clear the content of the m_flow_box, m_buttons, m_images and repopulate it
     // according to the content of the EntryManager
+
+    for (std::map<std::string, Gtk::Button*>::const_iterator i = m_buttons.begin(); i != m_buttons.end(); ++i) {
+        delete i->second; 
+    }
+    m_buttons.clear();
+
+    for (std::map<std::string, Gtk::Image*>::const_iterator i = m_images.begin(); i != m_images.end(); ++i) {
+        delete i->second; 
+    }
 
     if (m_entry_manager->getEntriesCount()) {
         for (EntryMap::const_iterator i = m_entry_manager->getEntryMap()->begin(); i != m_entry_manager->getEntryMap()->end(); ++i) {
