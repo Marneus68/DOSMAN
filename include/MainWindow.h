@@ -7,7 +7,10 @@
 #include <gtkmm/stackswitcher.h>
 #include <gtkmm/box.h>
 #include <gtkmm/bin.h>
+#include <gtkmm/frame.h>
 #include <gtkmm/button.h>
+#include <gtkmm/radiobutton.h>
+#include <gtkmm/checkbutton.h>
 #include <gtkmm/buttonbox.h>
 #include <gtkmm/label.h>
 
@@ -44,6 +47,8 @@ namespace dosman {
 
             unsigned int                    m_entries_num;
 
+            bool editwindowvisited;
+
             /* EntryManager */
             EntryManager *                  m_entry_manager;
 
@@ -53,7 +58,8 @@ namespace dosman {
                                             m_content_box,
                                             m_collection_box,
                                             m_edition_box,
-                                            m_edition_entry_box;
+                                            m_edition_entry_box,
+                                            m_entry_frame_box;
             Gtk::HPaned                     m_edition_panned;
             Gtk::ButtonBox                  m_edit_buttons_box,
                                             m_edit_save_run_box;
@@ -73,7 +79,6 @@ namespace dosman {
             std::map<std::string, Gtk::Button*> m_buttons;
             std::map<std::string, Gtk::Image*>  m_images;
 
-
             class ModelColumns : public Gtk::TreeModelColumnRecord {
                 public:
                     ModelColumns () { 
@@ -86,8 +91,59 @@ namespace dosman {
             ModelColumns m_columns;
 
             Gtk::TreeView                   m_treeview;
-            //Gtk::ListStore*                 m_treemodel;
             Glib::RefPtr<Gtk::ListStore> m_reftreemodel;
+
+            // Widgets for the entry configuration 
+            Gtk::Frame                      m_entry_frame,
+                                            m_sdl_frame,
+                                            m_dosbox_frame,
+                                            m_render_frame,
+                                            m_cpu_frame,
+                                            m_mixer_frame,
+                                            m_midi_frame,
+                                            m_sblaster_frame,
+                                            m_gus_frame,
+                                            m_speaker_frame;
+            Gtk::ButtonBox                  m_entry_button_box;
+            Gtk::Button                     m_entry_select_executable,
+                                            m_entry_select_setup;
+            Gtk::Image                      m_entry_image;
+            Gtk::HBox                       m_entry_box;
+            Gtk::VBox                       m_sdl_box,
+                                            m_render_box;
+            Gtk::FlowBox                    m_rb_machine_box,
+                                            m_rb_scaler_box,
+                                            m_rb_output_box;
+            Gtk::RadioButton::Group         m_rb_machine_group,
+                                            m_rb_scaler_group,
+                                            m_rb_output_group;
+            Gtk::RadioButton                m_rb_machine_hercules,
+                                            m_rb_machine_cga,
+                                            m_rb_machine_tandy,
+                                            m_rb_machine_pcjr,
+                                            m_rb_machine_ega,
+                                            m_rb_machine_vgaonly,
+                                            m_rb_machine_svga_s3,
+
+                                            m_rb_scaler_none,
+                                            m_rb_scaler_normal2x,
+                                            m_rb_scaler_normal3x,
+                                            m_rb_scaler_tv2x,
+                                            m_rb_scaler_tv3x,
+                                            m_rb_scaler_rgb2x,
+                                            m_rb_scaler_rgb3x,
+                                            m_rb_scaler_scan2x,
+                                            m_rb_scaler_scan3x,
+
+                                            m_rb_output_surface,
+                                            m_rb_output_overlay,
+                                            m_rb_output_opengl,
+                                            m_rb_output_openglnb;
+
+            Gtk::CheckButton                m_cb_sdl_fullscreen,
+                                            m_cb_autolock,
+                                            m_cb_render_aspect,
+                                            m_cb_nosound;
 
     }; /* MainWindow */
 } /* dosman */

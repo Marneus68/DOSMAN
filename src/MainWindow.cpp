@@ -10,13 +10,51 @@ dosman::MainWindow::MainWindow() :
     m_collection_box(Gtk::ORIENTATION_VERTICAL),
     m_edition_box(Gtk::ORIENTATION_VERTICAL),
     m_edition_entry_box(Gtk::ORIENTATION_VERTICAL),
+    m_entry_frame_box(Gtk::ORIENTATION_VERTICAL),
     m_edit_buttons_box(Gtk::ORIENTATION_HORIZONTAL),
     m_edit_save_run_box(Gtk::ORIENTATION_HORIZONTAL),
     m_entries_num(0),
     m_edit_add(Gtk::Stock::ADD),
     m_edit_remove(Gtk::Stock::REMOVE),
     m_edit_save("Save"),
-    m_edit_run("Run")
+    m_edit_run("Run"),
+
+    m_entry_button_box(Gtk::ORIENTATION_VERTICAL),
+
+    m_entry_select_executable("Select executable"),
+    m_entry_select_setup("Run configuration program"),
+
+    m_cb_sdl_fullscreen("Fullscreen"),
+
+    m_rb_machine_hercules("Hercules"),
+    m_rb_machine_cga("CGA"),
+    m_rb_machine_tandy("Tandy compatible"),
+    m_rb_machine_pcjr("PCjr"),
+    m_rb_machine_ega("EGA"),
+    m_rb_machine_vgaonly("VGA"),
+    m_rb_machine_svga_s3("SVGA"),
+
+    m_rb_scaler_none("None"),
+    m_rb_scaler_normal2x("2x"),
+    m_rb_scaler_normal3x("3x"),
+    m_rb_scaler_tv2x("TV 2x"),
+    m_rb_scaler_tv3x("TV 3x"),
+    m_rb_scaler_rgb2x("RGB 2x"),
+    m_rb_scaler_rgb3x("RGV 3x"),
+    m_rb_scaler_scan2x("Scanlines 2x"),
+    m_rb_scaler_scan3x("Scanlines 3x"),
+
+    m_rb_output_surface("Surface"),
+    m_rb_output_overlay("Overlay"),
+    m_rb_output_opengl("OpenGL"),
+    m_rb_output_openglnb("OpenGL nb"),
+
+    m_cb_autolock("Automatically lock the mouse"),
+
+    m_cb_render_aspect("Aspect correction"),
+
+    m_cb_nosound("Silent mode")
+
 {
     set_title("DOSMAN");
     set_border_width(10);
@@ -36,12 +74,12 @@ dosman::MainWindow::MainWindow() :
     m_flow_box.set_halign(Gtk::ALIGN_START);
     m_flow_box.set_valign(Gtk::ALIGN_START);
 
+
     m_scrolled_window.add(m_flow_box);
     
     m_collection_box.pack_start(m_scrolled_window, true, true);
 
     update_collection_widget();
-
     /* end of Collection page */
 
     /* Edition page */
@@ -80,10 +118,9 @@ dosman::MainWindow::MainWindow() :
     m_edition_entry_box.pack_start(m_edit_entry, Gtk::PACK_EXPAND_WIDGET);
     m_edition_entry_box.pack_end(m_edit_save_run_box, Gtk::PACK_SHRINK);
 
-    m_edit_entry.add(m_entry_title);
-
     update_edition_widget();
 
+    editwindowvisited = false;
     /* end of edition page */
 
     m_stack.set_transition_type(Gtk::STACK_TRANSITION_TYPE_SLIDE_LEFT_RIGHT);
@@ -142,7 +179,132 @@ void dosman::MainWindow::on_row_selected()
 
     std::string tmp_key(port.data());
     if (tmp_key.compare("") == 0)  return;
-    m_entry_title.set_text(tmp_key);
+
+    m_entry_frame.set_label(tmp_key);
+    if (!editwindowvisited) {
+        
+        m_entry_button_box.set_layout(Gtk::BUTTONBOX_EXPAND);
+        m_entry_button_box.pack_start(m_entry_select_executable);
+        m_entry_button_box.pack_start(m_entry_select_setup);
+
+        m_entry_box.pack_start(m_entry_button_box, Gtk::PACK_SHRINK);
+
+        m_entry_box.pack_end(m_entry_image, Gtk::PACK_SHRINK);
+
+        m_entry_box.set_border_width(10);
+
+        m_entry_frame.add(m_entry_box);
+
+        m_sdl_frame.set_label("SDL");
+
+        m_rb_output_group = m_rb_output_surface.get_group();
+        m_rb_output_overlay.set_group(m_rb_output_group);
+        m_rb_output_opengl.set_group(m_rb_output_group);
+        m_rb_output_openglnb.set_group(m_rb_output_group);
+
+        m_rb_output_box.add(m_rb_output_surface);
+        m_rb_output_box.add(m_rb_output_overlay);
+        m_rb_output_box.add(m_rb_output_opengl);
+        m_rb_output_box.add(m_rb_output_openglnb);
+
+        m_sdl_box.add(m_cb_sdl_fullscreen);
+        m_sdl_box.add(m_rb_output_box);
+        m_sdl_box.add(m_cb_autolock);
+
+        m_sdl_box.set_border_width(10);
+
+        m_sdl_frame.add(m_sdl_box); 
+
+        m_dosbox_frame.set_label("Machine type");
+        
+        m_rb_machine_group = m_rb_machine_hercules.get_group();
+        m_rb_machine_cga.set_group(m_rb_machine_group);
+        m_rb_machine_tandy.set_group(m_rb_machine_group);
+        m_rb_machine_pcjr.set_group(m_rb_machine_group);
+        m_rb_machine_ega.set_group(m_rb_machine_group);
+        m_rb_machine_vgaonly.set_group(m_rb_machine_group);
+        m_rb_machine_svga_s3.set_group(m_rb_machine_group);
+
+        m_rb_machine_box.add(m_rb_machine_cga);
+        m_rb_machine_box.add(m_rb_machine_tandy);
+        m_rb_machine_box.add(m_rb_machine_pcjr);
+        m_rb_machine_box.add(m_rb_machine_ega);
+        m_rb_machine_box.add(m_rb_machine_vgaonly);
+        m_rb_machine_box.add(m_rb_machine_svga_s3);
+       
+        m_rb_machine_box.set_border_width(10);
+
+        m_dosbox_frame.add(m_rb_machine_box);
+
+        m_render_frame.set_label("Rendering");
+
+        m_rb_scaler_group = m_rb_scaler_none.get_group();
+        m_rb_scaler_normal2x.set_group(m_rb_scaler_group);
+        m_rb_scaler_normal3x.set_group(m_rb_scaler_group);
+        m_rb_scaler_tv2x.set_group(m_rb_scaler_group);
+        m_rb_scaler_tv3x.set_group(m_rb_scaler_group);
+        m_rb_scaler_rgb2x.set_group(m_rb_scaler_group);
+        m_rb_scaler_rgb3x.set_group(m_rb_scaler_group);
+        m_rb_scaler_scan2x.set_group(m_rb_scaler_group);
+        m_rb_scaler_scan3x.set_group(m_rb_scaler_group);
+
+        m_rb_scaler_box.add(m_rb_scaler_none);
+        m_rb_scaler_box.add(m_rb_scaler_normal2x);
+        m_rb_scaler_box.add(m_rb_scaler_normal3x);
+        m_rb_scaler_box.add(m_rb_scaler_tv2x);
+        m_rb_scaler_box.add(m_rb_scaler_tv3x);
+        m_rb_scaler_box.add(m_rb_scaler_rgb2x);
+        m_rb_scaler_box.add(m_rb_scaler_rgb3x);
+        m_rb_scaler_box.add(m_rb_scaler_scan2x);
+        m_rb_scaler_box.add(m_rb_scaler_scan3x);
+
+        m_render_box.add(m_rb_scaler_box);
+        m_render_box.add(m_cb_render_aspect);
+
+        m_render_box.set_border_width(10);
+
+        m_render_frame.add(m_render_box);
+
+        //m_cpu_frame.set_label("CPU");
+        m_mixer_frame.set_label("Sound emulation");
+
+        m_mixer_frame.add(m_cb_nosound);
+
+        //m_midi_frame.set_label("MIDI");
+        //m_sblaster_frame.set_label("Sound Blaster emulation");
+        //m_gus_frame.set_label("Gravis UltraSound emulation");
+        //m_speaker_frame.set_label("PC speaker emulation");
+
+        m_entry_frame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+        m_sdl_frame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+        m_dosbox_frame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+        m_render_frame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+        //m_cpu_frame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+        m_mixer_frame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+        //m_midi_frame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+        //m_sblaster_frame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+        //m_gus_frame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+        //m_speaker_frame.set_shadow_type(Gtk::SHADOW_ETCHED_OUT);
+
+        m_entry_frame_box.add(m_entry_frame);
+        m_entry_frame_box.add(m_sdl_frame);
+        m_entry_frame_box.add(m_dosbox_frame);
+        m_entry_frame_box.add(m_render_frame);
+        //m_entry_frame_box.add(m_cpu_frame);
+        m_entry_frame_box.add(m_mixer_frame);
+        //m_entry_frame_box.add(m_midi_frame);
+        //m_entry_frame_box.add(m_sblaster_frame);
+        //m_entry_frame_box.add(m_gus_frame);
+        //m_entry_frame_box.add(m_speaker_frame);
+
+        m_edit_entry.add(m_entry_frame_box);
+
+        editwindowvisited = true;
+    }
+
+    m_entry_image.set(m_entry_manager->getEntryMap()->at(tmp_key).getImagePath());
+
+    m_entry_frame_box.show_all();
 }
 
 void dosman::MainWindow::on_run_edited_entry()
