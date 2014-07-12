@@ -306,29 +306,28 @@ void dosman::MainWindow::on_row_selected()
     Entry tmp_entry =  m_entry_manager->getEntryMap()->at(tmp_key);
     m_entry_image.set(tmp_entry.getImagePath());
 
-    std::cout << tmp_entry.getConfig()->getKeyValueFromGroup("sdl", "fullscreen") <<
-    std::endl << tmp_entry.getConfig()->getKeyValueFromGroup("sdl", "autolock") <<
-    std::endl << tmp_entry.getConfig()->getKeyValueFromGroup("sdl", "output") <<
-    std::endl << tmp_entry.getConfig()->getKeyValueFromGroup("dosbox", "machine") <<
-    std::endl << tmp_entry.getConfig()->getKeyValueFromGroup("render", "scaler") <<
-    std::endl << tmp_entry.getConfig()->getKeyValueFromGroup("render", "aspect") <<
-    std::endl << tmp_entry.getConfig()->getKeyValueFromGroup("mixer", "nosound") << 
-    std::endl;
-
     if (std::string(tmp_entry.getConfig()->getKeyValueFromGroup("sdl", "fullscreen")).compare("true") == 0) {
         m_cb_sdl_fullscreen.set_active(true);
+    } else {
+        m_cb_sdl_fullscreen.set_active(false);
     }
 
     if (std::string(tmp_entry.getConfig()->getKeyValueFromGroup("sdl", "autolock")).compare("true") == 0) {
         m_cb_autolock.set_active(true);
+    } else {
+        m_cb_autolock.set_active(false);
     }
 
     if (std::string(tmp_entry.getConfig()->getKeyValueFromGroup("render", "aspect")).compare("true") == 0) {
         m_cb_render_aspect.set_active(true);
+    } else {
+        m_cb_render_aspect.set_active(false);
     }
 
     if (std::string(tmp_entry.getConfig()->getKeyValueFromGroup("mixer", "nosound")).compare("true") == 0) {
         m_cb_nosound.set_active(true);
+    } else {
+        m_cb_nosound.set_active(false);
     }
 
     std::string output = tmp_entry.getConfig()->getKeyValueFromGroup("sdl", "output"); 
@@ -379,6 +378,8 @@ void dosman::MainWindow::on_row_selected()
     } else if (scaler.compare("scan3x") == 0 ) {
         m_rb_scaler_scan3x.set_active(true);
     }
+
+    m_entry_frame_box.show_all();
 }
 
 void dosman::MainWindow::on_run_edited_entry()
@@ -395,14 +396,89 @@ void dosman::MainWindow::on_run_edited_entry()
 
 void dosman::MainWindow::on_save_edited_entry()
 {
-    std::cout << "Let's save" << std::endl;
+    Glib::RefPtr<Gtk::TreeSelection> selection = m_treeview.get_selection();
+    Gtk::TreeModel::iterator selectedRow = selection->get_selected();
+    Gtk::TreeModel::Row row = *selectedRow;
+    Glib::ustring port = row.get_value(m_columns.m_col_name);
+
+    std::string tmp_key(port.data());
+    if (tmp_key.compare("") == 0)  return;
+    Entry tmp_entry = m_entry_manager->getEntryMap()->at(tmp_key);
+
+    std::string fullscreen = "false",
+                autolock = "true",
+                aspect = "true",
+                nosound = "false",
+                machine = "svga_s3",
+                output = "surface",
+                scaler = "none";
+
+    fullscreen = m_cb_sdl_fullscreen.get_active() ? "true" : "false"; 
+    autolock = m_cb_autolock.get_active() ? "true" : "false"; 
+    aspect = m_cb_render_aspect.get_active() ? "true" : "false"; 
+    nosound = m_cb_nosound.get_active() ? "true" : "false"; 
+
+    if (m_rb_output_surface.get_active()) {
+        output = "surface";
+    } else if (m_rb_output_overlay.get_active()) {
+        output = "overlay";
+    } else if (m_rb_output_opengl.get_active()) {
+        output = "opengl";
+    } else if (m_rb_output_openglnb.get_active()) {
+        output = "openglnb";
+    }
+
+    if (m_rb_machine_hercules.get_active()) {
+        machine = "hercules";
+    } else if (m_rb_machine_cga.get_active()) {
+        machine = "cga";
+    } else if (m_rb_machine_tandy.get_active()) {
+        machine = "tandy";
+    } else if (m_rb_machine_pcjr.get_active()) {
+        machine = "pcjr";
+    } else if (m_rb_machine_ega.get_active()) {
+        machine = "ega";
+    } else if (m_rb_machine_vgaonly.get_active()) {
+        machine = "vgaonly";
+    } else if (m_rb_machine_svga_s3.get_active()) {
+        machine = "svga_s3";
+    }
+
+    if (m_rb_scaler_none.get_active()) {
+        scaler = "none";
+    } else if (m_rb_scaler_normal2x.get_active()) {
+        scaler = "normal2x";
+    } else if (m_rb_scaler_normal3x.get_active()) {
+        scaler = "normal3x";
+    } else if (m_rb_scaler_tv2x.get_active()) {
+        scaler = "tv2x";
+    } else if (m_rb_scaler_tv3x.get_active()) {
+        scaler = "tv3x";
+    } else if (m_rb_scaler_rgb2x.get_active()) {
+        scaler = "rgb2x";
+    } else if (m_rb_scaler_rgb3x.get_active()) {
+        scaler = "rgb3x";
+    } else if (m_rb_scaler_scan2x.get_active())  {
+        scaler = "scan2x";
+    } else if (m_rb_scaler_scan3x.get_active()) {
+        scaler = "scan3x";
+    }
+
+    tmp_entry.getConfig()->setKeyValue("sdl", "fullscreen", fullscreen);
+    tmp_entry.getConfig()->setKeyValue("sdl", "output", output);
+    tmp_entry.getConfig()->setKeyValue("sdl", "autolock", autolock);
+    tmp_entry.getConfig()->setKeyValue("dosbox", "machine", machine);
+    tmp_entry.getConfig()->setKeyValue("render", "scaler", scaler);
+    tmp_entry.getConfig()->setKeyValue("render", "aspect", aspect);
+    tmp_entry.getConfig()->setKeyValue("mixer", "nosound", aspect);
+
+    tmp_entry.writeConfig();
 }
 
 void dosman::MainWindow::update_collection_widget() {
     
     // clear the content of the m_flow_box, m_buttons, m_images and repopulate it
     // according to the content of the EntryManager
-
     for (std::map<std::string, Gtk::Button*>::const_iterator i = m_buttons.begin(); i != m_buttons.end(); ++i) {
         delete i->second; 
     }

@@ -8,8 +8,6 @@ namespace dosman{
         dosConfFile = new Glib::KeyFile();  
         bool isFileEmpty = dosConfFile->load_from_file(filename, flags);
         if(!isFileEmpty){
-            std::cout <<"sorry the configuration file is empty"<< std::endl;
-            //exit(-1);
             throw InvalidConfigFileException();
         }
     }
@@ -19,7 +17,6 @@ namespace dosman{
             dosConfFile = new Glib::KeyFile();  
             dosConfFile = parserIn.dosConfFile;
         } catch (std::exception &e ) {
-            //std::cout << "Failed to init key parser by copy" << e.what() << std::endl ;
             throw InvalidConfigFileException();
         }
     }
@@ -30,7 +27,7 @@ namespace dosman{
             dosConfFile = new Glib::KeyFile();  
             dosConfFile = parserIn.dosConfFile;
         } catch (std::exception &e ) {
-            std::cout << "Affectation Error" << e.what() << std::endl ;
+            std::cerr << "Affectation Error" << e.what() << std::endl ;
         }
         return *this;
     }
@@ -46,10 +43,8 @@ namespace dosman{
 
     bool KeyValueParser::saveConfigurationFile( const std::string &   filename){
         if(dosConfFile->save_to_file(filename)){
-            std::cout << "the file have been saved" <<std::endl;
             return 1;
         } else {
-            std::cout << "failed to save dos configs" <<std::endl;
             return 0;
         }
     }
