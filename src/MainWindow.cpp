@@ -301,10 +301,84 @@ void dosman::MainWindow::on_row_selected()
 
         editwindowvisited = true;
     }
-
-    m_entry_image.set(m_entry_manager->getEntryMap()->at(tmp_key).getImagePath());
-
     m_entry_frame_box.show_all();
+
+    Entry tmp_entry =  m_entry_manager->getEntryMap()->at(tmp_key);
+    m_entry_image.set(tmp_entry.getImagePath());
+
+    std::cout << tmp_entry.getConfig()->getKeyValueFromGroup("sdl", "fullscreen") <<
+    std::endl << tmp_entry.getConfig()->getKeyValueFromGroup("sdl", "autolock") <<
+    std::endl << tmp_entry.getConfig()->getKeyValueFromGroup("sdl", "output") <<
+    std::endl << tmp_entry.getConfig()->getKeyValueFromGroup("dosbox", "machine") <<
+    std::endl << tmp_entry.getConfig()->getKeyValueFromGroup("render", "scaler") <<
+    std::endl << tmp_entry.getConfig()->getKeyValueFromGroup("render", "aspect") <<
+    std::endl << tmp_entry.getConfig()->getKeyValueFromGroup("mixer", "nosound") << 
+    std::endl;
+
+    if (std::string(tmp_entry.getConfig()->getKeyValueFromGroup("sdl", "fullscreen")).compare("true") == 0) {
+        m_cb_sdl_fullscreen.set_active(true);
+    }
+
+    if (std::string(tmp_entry.getConfig()->getKeyValueFromGroup("sdl", "autolock")).compare("true") == 0) {
+        m_cb_autolock.set_active(true);
+    }
+
+    if (std::string(tmp_entry.getConfig()->getKeyValueFromGroup("render", "aspect")).compare("true") == 0) {
+        m_cb_render_aspect.set_active(true);
+    }
+
+    if (std::string(tmp_entry.getConfig()->getKeyValueFromGroup("mixer", "nosound")).compare("true") == 0) {
+        m_cb_nosound.set_active(true);
+    }
+
+    std::string output = tmp_entry.getConfig()->getKeyValueFromGroup("sdl", "output"); 
+    if (output.compare("surface") == 0) {
+        m_rb_output_surface.set_active(true);
+    } else if (output.compare("overlay") == 0) {
+        m_rb_output_overlay.set_active(true);
+    } else if (output.compare("opengl") == 0) {
+        m_rb_output_opengl.set_active(true);
+    } else if (output.compare("openglnb") == 0) {
+        m_rb_output_openglnb.set_active(true);
+    }
+
+    std::string machine_type = tmp_entry.getConfig()->getKeyValueFromGroup("dosbox", "machine");
+    if (machine_type.compare("hercules") == 0) {
+        m_rb_machine_hercules.set_active(true);
+    } else if (machine_type.compare("cga") == 0) {
+        m_rb_machine_cga.set_active(true);
+    } else if (machine_type.compare("tandy") == 0) {
+        m_rb_machine_tandy.set_active(true);
+    } else if (machine_type.compare("pcjr") == 0) {
+        m_rb_machine_pcjr.set_active(true);
+    } else if (machine_type.compare("ega") == 0) {
+        m_rb_machine_ega.set_active(true);
+    } else if (machine_type.compare("vgaonly") == 0) {
+        m_rb_machine_vgaonly.set_active(true);
+    } else if (machine_type.compare("svga_s3") == 0) {
+        m_rb_machine_svga_s3.set_active(true);
+    }
+
+    std::string scaler = tmp_entry.getConfig()->getKeyValueFromGroup("render", "scaler");
+    if (scaler.compare("none") == 0 ) {
+        m_rb_scaler_none.set_active(true);
+    } else if (scaler.compare("normal2x") == 0 ) {
+        m_rb_scaler_normal2x.set_active(true);
+    } else if (scaler.compare("normal3x") == 0 ) {
+        m_rb_scaler_normal3x.set_active(true);
+    } else if (scaler.compare("tv2x") == 0 ) {
+        m_rb_scaler_tv2x.set_active(true);
+    } else if (scaler.compare("tv3x") == 0 ) {
+        m_rb_scaler_tv3x.set_active(true);
+    } else if (scaler.compare("rgb2x") == 0 ) {
+        m_rb_scaler_rgb2x.set_active(true);
+    } else if (scaler.compare("rgb3x") == 0 ) {
+        m_rb_scaler_rgb3x.set_active(true);
+    } else if (scaler.compare("scan2x") == 0 ) {
+        m_rb_scaler_scan2x.set_active(true);
+    } else if (scaler.compare("scan3x") == 0 ) {
+        m_rb_scaler_scan3x.set_active(true);
+    }
 }
 
 void dosman::MainWindow::on_run_edited_entry()

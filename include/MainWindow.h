@@ -117,6 +117,7 @@ namespace dosman {
             Gtk::RadioButton::Group         m_rb_machine_group,
                                             m_rb_scaler_group,
                                             m_rb_output_group;
+
             Gtk::RadioButton                m_rb_machine_hercules,
                                             m_rb_machine_cga,
                                             m_rb_machine_tandy,

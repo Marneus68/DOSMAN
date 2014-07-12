@@ -146,3 +146,14 @@ void dosman::Entry::run()
         std::cout << "Something went wrong somewhere." << std::endl;
 }
 
+dosman::KeyValueParser* dosman::Entry::getConfig(void)
+{
+    return config; 
+}
+
+void dosman::Entry::writeConfig(void)
+{
+    config->saveConfigurationFile(getConfPath());
+}
+
+

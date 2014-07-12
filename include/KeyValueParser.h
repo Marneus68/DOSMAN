@@ -30,13 +30,8 @@ namespace dosman{
       
       Glib::KeyFile* dosConfFile; /*!< a key value struct in which the conf file datas will be stored */
 
-      /// initialization construtor 
       KeyValueParser(const std::string& filename);
-      
-      ///construtor by copy
       KeyValueParser(const KeyValueParser&);
-
-      ///construtor by copy
       KeyValueParser& operator=(const KeyValueParser&);
       
       /// get all groups
@@ -58,7 +53,7 @@ namespace dosman{
       void  setMultipleValuesInKey (const std::string& group_name, const std::string& key, const std::vector<Glib::ustring >& list);
 
       /// save dos config file  
-      bool saveConfigurationFile( const std::string&   filename);
+      bool saveConfigurationFile( const std::string & filename);
       
       /**
        * destructor

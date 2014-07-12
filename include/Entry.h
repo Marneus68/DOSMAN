@@ -63,9 +63,18 @@ namespace dosman {
             */
             bool containsImage(void);
             /**
+            * @brief Returns a pointer to the KeyValueParse that holds the configuration of the Entry
+            */
+            KeyValueParser* getConfig(void);
+            /**
             * @brief Run the entru with DOSBox
             */
             void run(void);
+            /**
+            * @brief Writes the updated configuration file to disk
+            */
+            void writeConfig(void);
+
     };
 } /* dosman */
 
