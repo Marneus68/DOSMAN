@@ -143,13 +143,60 @@ dosman::MainWindow::MainWindow() :
 
 dosman::MainWindow::~MainWindow() {}
 
+void dosman::MainWindow::on_select_folder() {
+    Gtk::FileChooserDialog dialog("Please choose a folder",
+            Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
+    dialog.set_transient_for(*this);
+
+    //Add response buttons the the dialog:
+    dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
+    dialog.add_button("Select", Gtk::RESPONSE_OK);
+
+    int result = dialog.run();
+
+    //Handle the response:
+    if (result == Gtk::RESPONSE_OK) {
+        std::cout << "Folder selected: " << dialog.get_filename() << std::endl;
+    } else {
+        dialog.hide();
+    }
+}
+
 void dosman::MainWindow::on_add_new_entry() {
-    std::cout << "Create a new Entry" << std::endl;
     /*Gtk::Button* useless = new Gtk::Button("lol");
     useless->set_vexpand(true);
     useless->set_hexpand(true);
     useless->set_size_request(128,128);
     m_flow_box.add(*useless); */
+
+    Gtk::VBox * mainbox = new Gtk::VBox();
+    Gtk::Entry * entry = new Gtk::Entry();
+    entry->set_text("New program name");
+    Gtk::ButtonBox * cancel_create_button_box = new Gtk::ButtonBox(Gtk::ORIENTATION_HORIZONTAL);
+    Gtk::Button * select_folder = new Gtk::Button("Click here to select the base folder of your program");
+    Gtk::Button * create_button = new Gtk::Button("Create");
+    Gtk::Button * cancel_button = new Gtk::Button("Cancel");
+    Gtk::Window * new_window = new Gtk::Window();
+
+    select_folder->signal_clicked().connect(sigc::mem_fun(*this,
+            &MainWindow::on_select_folder) );
+    cancel_button->signal_clicked().connect(sigc::mem_fun(new_window,
+            &Window::hide));   
+
+    cancel_create_button_box->add(*cancel_button);
+    cancel_create_button_box->add(*create_button);
+
+    mainbox->pack_start(*entry, Gtk::PACK_SHRINK);
+    mainbox->pack_start(*select_folder, Gtk::PACK_SHRINK);
+    mainbox->pack_end(*cancel_create_button_box, Gtk::PACK_SHRINK);
+
+    Gtk::HeaderBar new_window_header_bar;
+
+    new_window->set_titlebar(new_window_header_bar);
+    new_window->add(*mainbox);
+    new_window->present();
+    new_window->set_border_width(10);
+    new_window->show_all_children(true);
 
     m_entry_manager->createEntry("foo", "bar", "boo");
 

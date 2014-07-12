@@ -9,7 +9,9 @@
 #include <gtkmm/bin.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/button.h>
+#include <gtkmm/entry.h>
 #include <gtkmm/radiobutton.h>
+#include <gtkmm/filechooserdialog.h>
 #include <gtkmm/checkbutton.h>
 #include <gtkmm/buttonbox.h>
 #include <gtkmm/label.h>
@@ -41,6 +43,8 @@ namespace dosman {
 
             void on_save_edited_entry();
             void on_run_edited_entry();
+
+            void on_select_folder();
 
             void update_collection_widget();
             void update_edition_widget();
