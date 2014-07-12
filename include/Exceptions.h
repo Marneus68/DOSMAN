@@ -39,6 +39,11 @@ namespace dosman {
         public:
             DOSBoxSpawnException(const std::string & e_message = "");
     };
+
+    class InvalidNameForEntryException : public DosmanException {
+        public:
+            InvalidNameForEntryException(const std::string & e_message = "");
+    };
 } /* dosman */
 
 #endif /* __EXCEPTIONS_H__ */

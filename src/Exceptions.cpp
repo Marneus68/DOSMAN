@@ -34,3 +34,7 @@ dosman::InvalidConfigFileException::InvalidConfigFileException(const std::string
 dosman::DOSBoxSpawnException::DOSBoxSpawnException(const std::string & e_message) :
     DosmanException(e_message, "There was an error while attempting to spawn DOSBox.\nAre you sure DOSBox is installed on the system and available from your PATH ?") {}
 
+
+dosman::InvalidNameForEntryException::InvalidNameForEntryException(const std::string & e_message) :
+    DosmanException(e_message, "The proposed name for the new Entry is either invalid or already taked.\nTry with another name.") {}
+

@@ -145,11 +145,14 @@ dosman::MainWindow::~MainWindow() {}
 
 void dosman::MainWindow::on_add_new_entry() {
     std::cout << "Create a new Entry" << std::endl;
-    Gtk::Button* useless = new Gtk::Button("lol");
+    /*Gtk::Button* useless = new Gtk::Button("lol");
     useless->set_vexpand(true);
     useless->set_hexpand(true);
     useless->set_size_request(128,128);
-    m_flow_box.add(*useless);
+    m_flow_box.add(*useless); */
+
+    m_entry_manager->createEntry("foo", "bar", "boo");
+
     m_flow_box.show_all();
 }
 

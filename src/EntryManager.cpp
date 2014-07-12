@@ -65,8 +65,7 @@ namespace dosman {
                 }
             }
         } else  {
-            std::cout << m_dosman_path << " is NOT present ! " 
-                    << m_dosman_path << " has been created." << std::endl;
+            std::cout << m_dosman_path << " is NOT present ! "  << m_dosman_path << " has been created." << std::endl;
         }
     }
 
@@ -89,10 +88,31 @@ namespace dosman {
         }
     }
 
-    void EntryManager::addEntry(const Entry &e_entry) {
+    void EntryManager::createEntry(const char * e_name, const char * e_source_path, const char * e_exe_path) {
+        if (!isNameFree(e_name)) {
+            throw InvalidConfigFileException();
+        }
+        // Create the entry folder
+        std::string mkdir("mkdir ");
+        std::string home("~");
+        std::string slash("/");
+        std::string name(e_name);
+        std::string line = mkdir + home + slash + name;
+        system(line.c_str());
+        line += "/drive_c";
+        system(line.c_str());
+        // reate the basic run.conf
+        //system("mv ~/dosbox*;I//
+        // Create a new Entry from that and add it to the map
     }
 
-    bool EntryManager::isNameFree(const std::string &e_name) {
+    bool EntryManager::isNameFree(const char * e_name) {
+        for (EntryMap::const_iterator i = m_entries.begin(); i != m_entries.end(); ++i) {
+            if (i->first.compare(e_name) == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     unsigned int EntryManager::getEntriesCount() {

@@ -33,8 +33,8 @@ namespace dosman {
             static EntryManager *Initialize();
             static void kill(void);
 
-            void addEntry(const Entry & e_entry);
-            bool isNameFree(const std::string & e_name);
+            void createEntry(const char * e_name, const char * e_source_path, const char * e_exe_path);
+            bool isNameFree(const char * e_name);
 
             unsigned int getEntriesCount();
 

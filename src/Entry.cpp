@@ -132,18 +132,12 @@ bool dosman::Entry::containsImage()
 
 void dosman::Entry::run()
 {
-    pid_t processID;
-    char *argV[] = {"dosbox", "-conf", (char*)getConfPath(), "-conf", (char*)getRunConfPath(), (char *) 0};
-    int status = -1;
-
-    std::cout << getConfPath() << std::endl;
-    std::cout << getRunConfPath() << std::endl;
-    status = posix_spawn(&processID,"dosbox",NULL,NULL,argV,environ);
-
-    if(status == 0)
-        std::cout << "Dosbox launched." << std::endl;
-    else
-        std::cout << "Something went wrong somewhere." << std::endl;
+    std::string dosbox("dosbox ");
+    std::string conf(" -conf ");
+    std::string cpath(getConfPath());
+    std::string rpath(getRunConfPath());
+    std::string line = dosbox + conf + cpath + conf + rpath;
+    system(line.c_str());
 }
 
 dosman::KeyValueParser* dosman::Entry::getConfig(void)
