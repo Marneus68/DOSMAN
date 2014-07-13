@@ -44,6 +44,8 @@ namespace dosman {
             void on_save_edited_entry();
             void on_run_edited_entry();
 
+            void on_create_button_clicked();
+
             void on_select_folder();
 
             void update_collection_widget();
@@ -51,7 +53,10 @@ namespace dosman {
 
             unsigned int                    m_entries_num;
 
-            bool editwindowvisited;
+            bool    editwindowvisited,
+                    new_entry_is_valid;
+            std::string new_entry_name,
+                        new_entry_path;
 
             /* EntryManager */
             EntryManager *                  m_entry_manager;
@@ -149,6 +154,9 @@ namespace dosman {
                                             m_cb_autolock,
                                             m_cb_render_aspect,
                                             m_cb_nosound;
+
+            Gtk::Window *                   new_window;
+            Gtk::Entry *                    entry;
 
     }; /* MainWindow */
 } /* dosman */

@@ -94,15 +94,20 @@ namespace dosman {
         }
         // Create the entry folder
         std::string mkdir("mkdir ");
-        std::string home("\"~");
+        std::string home("~");
         std::string slash("/");
         std::string name(e_name);
         std::string line = mkdir + home + slash + name;
-        std::cout << (line + "\"") << std::endl;
-        system((line + "\"").c_str());
+        std::cout << (line) << std::endl;
+        system((line).c_str());
         line += "/drive_c";
-        system((line + "\"").c_str());
-        std::cout << (line + "\"") << std::endl;
+        system((line).c_str());
+        std::cout << (line) << std::endl;
+        std::string newline("cp `dosbox -printconf` ~/" + std::string(e_name) + "/dosbox.conf");
+        std::cout << newline << std::endl;
+        system(newline.c_str());
+        std::string yetnewline("cp -rf \"" + std::string(e_source_path) + "\" ~/" + std::string(e_name) + "/drive_c/");
+        system(yetnewline.c_str());
         // reate the basic run.conf
         //system("mv ~/dosbox*;I//
         // Create a new Entry from that and add it to the map

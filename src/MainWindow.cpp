@@ -138,13 +138,17 @@ dosman::MainWindow::MainWindow() :
 
     add(m_content_box);
 
+    new_entry_is_valid = false;
+    new_entry_path = "";
+    new_entry_name = "";
+
     show_all_children(true);
 }
 
 dosman::MainWindow::~MainWindow() {}
 
 void dosman::MainWindow::on_select_folder() {
-    Gtk::FileChooserDialog dialog("Please choose a folder",
+    Gtk::FileChooserDialog dialog("Pick the base folder of your application",
             Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
     dialog.set_transient_for(*this);
 
@@ -157,8 +161,18 @@ void dosman::MainWindow::on_select_folder() {
     //Handle the response:
     if (result == Gtk::RESPONSE_OK) {
         std::cout << "Folder selected: " << dialog.get_filename() << std::endl;
+        new_entry_path = dialog.get_filename();
+        new_entry_is_valid = true;
     } else {
         dialog.hide();
+    }
+}
+
+void dosman::MainWindow::on_create_button_clicked() {
+    if (new_entry_is_valid) {
+        new_entry_name = entry->get_text();
+        m_entry_manager->createEntry(new_entry_name.c_str(), new_entry_path.c_str(), "boo");
+        new_window->hide();         
     }
 }
 
@@ -170,18 +184,20 @@ void dosman::MainWindow::on_add_new_entry() {
     m_flow_box.add(*useless); */
 
     Gtk::VBox * mainbox = new Gtk::VBox();
-    Gtk::Entry * entry = new Gtk::Entry();
-    entry->set_text("New program name");
+    entry = new Gtk::Entry();
+    entry->set_text("Entry");
     Gtk::ButtonBox * cancel_create_button_box = new Gtk::ButtonBox(Gtk::ORIENTATION_HORIZONTAL);
     Gtk::Button * select_folder = new Gtk::Button("Click here to select the base folder of your program");
     Gtk::Button * create_button = new Gtk::Button("Create");
     Gtk::Button * cancel_button = new Gtk::Button("Cancel");
-    Gtk::Window * new_window = new Gtk::Window();
+    new_window = new Gtk::Window();
 
     select_folder->signal_clicked().connect(sigc::mem_fun(*this,
             &MainWindow::on_select_folder) );
     cancel_button->signal_clicked().connect(sigc::mem_fun(new_window,
             &Window::hide));   
+    create_button->signal_clicked().connect(sigc::mem_fun(*this,
+            &MainWindow::on_create_button_clicked));
 
     cancel_create_button_box->add(*cancel_button);
     cancel_create_button_box->add(*create_button);
@@ -198,7 +214,6 @@ void dosman::MainWindow::on_add_new_entry() {
     new_window->set_border_width(10);
     new_window->show_all_children(true);
 
-    m_entry_manager->createEntry("foo", "bar", "boo");
 
     m_flow_box.show_all();
 }
