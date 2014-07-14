@@ -46,9 +46,11 @@ mrproper: clean
 
 install:
 	@echo "Installing..."
+	install ./dosman /usr/bin/
 
 uninstall:
 	@echo "Uninstalling..."
+	rm /usr/bin/dosman
 
 doc:
 	@echo "Building documentation..."
