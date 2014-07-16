@@ -173,16 +173,21 @@ void dosman::MainWindow::on_create_button_clicked() {
         new_entry_name = entry->get_text();
         m_entry_manager->createEntry(new_entry_name.c_str(), new_entry_path.c_str(), "boo");
         new_window->hide();         
+
+        Gtk::Button* useless = new Gtk::Button(new_entry_name);
+        useless->set_vexpand(true);
+        useless->set_hexpand(true);
+        useless->set_size_request(128,128);
+        m_flow_box.add(*useless);
+
+        Gtk::TreeModel::Row row = *(m_reftreemodel->append());
+        row[m_columns.m_col_name] = new_entry_name;
+
+        m_flow_box.show_all();
     }
 }
 
 void dosman::MainWindow::on_add_new_entry() {
-    /*Gtk::Button* useless = new Gtk::Button("lol");
-    useless->set_vexpand(true);
-    useless->set_hexpand(true);
-    useless->set_size_request(128,128);
-    m_flow_box.add(*useless); */
-
     Gtk::VBox * mainbox = new Gtk::VBox();
     entry = new Gtk::Entry();
     entry->set_text("Entry");
@@ -213,7 +218,6 @@ void dosman::MainWindow::on_add_new_entry() {
     new_window->present();
     new_window->set_border_width(10);
     new_window->show_all_children(true);
-
 
     m_flow_box.show_all();
 }
@@ -568,7 +572,6 @@ void dosman::MainWindow::update_collection_widget() {
                 tmp_image = new Gtk::Image(tmp_entry.getImagePath());
                 tmp_button->add(*tmp_image);
             } else {
-                //tmp_image = new Gtk::Image("./img/diskicon.png");
                 tmp_button->set_label(tmp_entry.getName());
             }
 
