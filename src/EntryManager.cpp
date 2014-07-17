@@ -96,6 +96,12 @@ namespace dosman {
         }
     }
 
+    void EntryManager::printEntriesNames() {
+        for (EntryMap::const_iterator i = m_entries.begin(); i != m_entries.end(); ++i) {
+            std::cout << i->second << std::endl;
+        }
+    }
+
     void EntryManager::createEntry(const char * e_name, const char * e_source_path, const char * e_source_folder_name, const char * e_exe_path) {
         if (!isNameFree(e_name)) {
             throw InvalidConfigFileException();
@@ -126,7 +132,7 @@ namespace dosman {
 
         // Create a new Entry from that and add it to the map
         std::pair<std::string, Entry > p = 
-            make_pair(std::string(e_name), Entry(std::string(DOSMAN_DIR)+"/"+e_name));
+            make_pair(std::string(e_name), Entry(std::string(getenv("HOME"))+"/"+e_name));
         m_entries.insert(p);
     }
 

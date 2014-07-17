@@ -204,11 +204,15 @@ void dosman::MainWindow::on_create_button_clicked() {
         m_entry_manager->createEntry(new_entry_name.c_str(), new_entry_path.c_str(), new_entry_folder_name.c_str() ,new_entry_exec.c_str());
         new_window->hide();         
 
-        Gtk::Button* useless = new Gtk::Button(new_entry_name);
-        useless->set_vexpand(true);
-        useless->set_hexpand(true);
-        useless->set_size_request(128,128);
-        m_flow_box.add(*useless);
+        m_entry_manager->printEntriesNames();
+
+        Gtk::Button* tmp_btn = new Gtk::Button(new_entry_name);
+        tmp_btn->set_vexpand(true);
+        tmp_btn->set_hexpand(true);
+        tmp_btn->set_size_request(128,128);
+        m_flow_box.add(*tmp_btn);
+
+        tmp_btn->signal_clicked().connect( sigc::mem_fun(m_entry_manager->getEntryMap()->at(new_entry_name), &Entry::run));
 
         Gtk::TreeModel::Row row = *(m_reftreemodel->append());
         row[m_columns.m_col_name] = new_entry_name;

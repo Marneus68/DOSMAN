@@ -45,11 +45,12 @@ namespace dosman {
             /**
             * @brief Returns the number of entries currently loaded in the manager.
             */
-            unsigned int getEntriesCount();
+            unsigned int getEntriesCount(void);
 
             Entry * getEntryWithName(const char * e_name);
             EntryMap * getEntryMap(void);
-
+            
+            void printEntriesNames(void);
 
     };
 } /* dosman */
