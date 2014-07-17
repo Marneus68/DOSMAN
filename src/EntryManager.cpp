@@ -1,6 +1,8 @@
 #include "EntryManager.h"
 
 #include <iostream>
+#include <fstream>
+#include <string>
 
 extern "C" {
     #include <dirent.h>
@@ -88,16 +90,12 @@ namespace dosman {
         }
     }
 
-    void EntryManager::createEntry(const char * e_name, const char * e_source_path, const char * e_exe_path) {
+    void EntryManager::createEntry(const char * e_name, const char * e_source_path, const char * e_source_folder_name, const char * e_exe_path) {
         if (!isNameFree(e_name)) {
             throw InvalidConfigFileException();
         }
-        // Create the entry folder
-        std::string mkdir("mkdir ");
-        std::string home("~");
-        std::string slash("/");
-        std::string name(e_name);
-        std::string line = mkdir + home + slash + name;
+        // Create the entry folder structure
+        std::string line = "mkdir ~/" + std::string(e_name);
         std::cout << (line) << std::endl;
         system((line).c_str());
         line += "/drive_c";
@@ -108,9 +106,22 @@ namespace dosman {
         system(newline.c_str());
         std::string yetnewline("cp -rf \"" + std::string(e_source_path) + "\" ~/" + std::string(e_name) + "/drive_c/");
         system(yetnewline.c_str());
+        //
         // reate the basic run.conf
-        //system("mv ~/dosbox*;I//
+        std::string runconf_path(std::string(getenv("HOME")) + "/" + 
+                std::string(e_name) + "/run.conf");
+        std::cout << runconf_path << std::endl;
+        std::ofstream runconf;
+        runconf.open(runconf_path.c_str());
+        runconf << "[autoexec]" << std::endl << "mount e ~/" << e_name << 
+                "/drive_c/" << e_source_folder_name << std::endl << "e:" << std::endl << 
+                e_exe_path << std::endl << "exit";
+        runconf.close();
+
         // Create a new Entry from that and add it to the map
+        std::pair<std::string, Entry > p = 
+            make_pair(std::string(e_name), Entry(std::string(DOSMAN_DIR)+"/"+e_name));
+        m_entries.insert(p);
     }
 
     bool EntryManager::isNameFree(const char * e_name) {

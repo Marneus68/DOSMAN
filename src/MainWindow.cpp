@@ -141,6 +141,8 @@ dosman::MainWindow::MainWindow() :
     new_entry_is_valid = false;
     new_entry_path = "";
     new_entry_name = "";
+    new_entry_exec = "";
+    new_entry_folder_name = "";
 
     show_all_children(true);
 }
@@ -160,9 +162,37 @@ void dosman::MainWindow::on_select_folder() {
 
     //Handle the response:
     if (result == Gtk::RESPONSE_OK) {
+        std::string pwd(dialog.get_current_folder());
+        std::string folder(dialog.get_filename());
+
         std::cout << "Folder selected: " << dialog.get_filename() << std::endl;
         new_entry_path = dialog.get_filename();
+        new_entry_folder_name = folder.substr(pwd.length()+1, folder.length());
+        std::cout << "Name of the selected folder: " << new_entry_folder_name << std::endl;
         new_entry_is_valid = true;
+    } else {
+        dialog.hide();
+    }
+}
+
+void dosman::MainWindow::on_select_executable() {
+    Gtk::FileChooserDialog dialog("Pick the executable of your application",
+            Gtk::FILE_CHOOSER_ACTION_OPEN);
+    dialog.set_transient_for(*this);
+
+    //Add response buttons the the dialog:
+    dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
+    dialog.add_button("Select", Gtk::RESPONSE_OK);
+
+    int result = dialog.run();
+
+    //Handle the response:
+    if (result == Gtk::RESPONSE_OK) {
+        std::string pwd(dialog.get_current_folder());
+        std::string file(dialog.get_filename());
+
+        new_entry_exec = file.substr(pwd.length()+1, file.length());
+        std::cout << "File selected: " << new_entry_exec << std::endl;
     } else {
         dialog.hide();
     }
@@ -171,7 +201,7 @@ void dosman::MainWindow::on_select_folder() {
 void dosman::MainWindow::on_create_button_clicked() {
     if (new_entry_is_valid) {
         new_entry_name = entry->get_text();
-        m_entry_manager->createEntry(new_entry_name.c_str(), new_entry_path.c_str(), "boo");
+        m_entry_manager->createEntry(new_entry_name.c_str(), new_entry_path.c_str(), new_entry_folder_name.c_str() ,new_entry_exec.c_str());
         new_window->hide();         
 
         Gtk::Button* useless = new Gtk::Button(new_entry_name);
@@ -193,12 +223,15 @@ void dosman::MainWindow::on_add_new_entry() {
     entry->set_text("Entry");
     Gtk::ButtonBox * cancel_create_button_box = new Gtk::ButtonBox(Gtk::ORIENTATION_HORIZONTAL);
     Gtk::Button * select_folder = new Gtk::Button("Click here to select the base folder of your program");
+    Gtk::Button * select_executable = new Gtk::Button("Click here to select the executable of your program");
     Gtk::Button * create_button = new Gtk::Button("Create");
     Gtk::Button * cancel_button = new Gtk::Button("Cancel");
     new_window = new Gtk::Window();
 
     select_folder->signal_clicked().connect(sigc::mem_fun(*this,
             &MainWindow::on_select_folder) );
+    select_executable->signal_clicked().connect(sigc::mem_fun(*this,
+            &MainWindow::on_select_executable) );
     cancel_button->signal_clicked().connect(sigc::mem_fun(new_window,
             &Window::hide));   
     create_button->signal_clicked().connect(sigc::mem_fun(*this,
@@ -209,6 +242,7 @@ void dosman::MainWindow::on_add_new_entry() {
 
     mainbox->pack_start(*entry, Gtk::PACK_SHRINK);
     mainbox->pack_start(*select_folder, Gtk::PACK_SHRINK);
+    mainbox->pack_start(*select_executable, Gtk::PACK_SHRINK);
     mainbox->pack_end(*cancel_create_button_box, Gtk::PACK_SHRINK);
 
     Gtk::HeaderBar new_window_header_bar;

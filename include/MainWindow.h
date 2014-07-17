@@ -47,6 +47,7 @@ namespace dosman {
             void on_create_button_clicked();
 
             void on_select_folder();
+            void on_select_executable();
 
             void update_collection_widget();
             void update_edition_widget();
@@ -56,7 +57,9 @@ namespace dosman {
             bool    editwindowvisited,
                     new_entry_is_valid;
             std::string new_entry_name,
-                        new_entry_path;
+                        new_entry_path,
+                        new_entry_exec,
+                        new_entry_folder_name;
 
             /* EntryManager */
             EntryManager *                  m_entry_manager;
