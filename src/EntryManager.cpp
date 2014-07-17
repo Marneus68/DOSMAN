@@ -90,6 +90,12 @@ namespace dosman {
         }
     }
 
+    std::ostream& operator<<( std::ostream& out , const EntryManager& e_entry_manager ) {
+        for (EntryMap::const_iterator i = e_entry_manager.m_entries.begin(); i != e_entry_manager.m_entries.end(); ++i) {
+            out << i->second;
+        }
+    }
+
     void EntryManager::createEntry(const char * e_name, const char * e_source_path, const char * e_source_folder_name, const char * e_exe_path) {
         if (!isNameFree(e_name)) {
             throw InvalidConfigFileException();
