@@ -5,6 +5,10 @@ DOSMAN
 
 DOSMAN is a graphical [DOSBox](http://www.dosbox.com/) front-end written in C++ for modern GNU/Linux desktop environements.
 
+With DOSMAN you can manage games, attribute cover artworks and tweaks the paramaters DOSBox will use to launch them.
+
+You can find the sources on GitHub [here](https://github.com/Marneus68/DOSMAN). 
+
 Screenshots
 -----------
 
