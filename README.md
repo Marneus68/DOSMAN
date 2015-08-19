@@ -1,7 +1,18 @@
+![Icon](https://raw.githubusercontent.com/Marneus68/DOSMAN/master/img/diskicon.png)
+
 DOSMAN
 ======
 
 DOSMAN is a graphical [DOSBox](http://www.dosbox.com/) front-end written in C++ for modern GNU/Linux desktop environements.
+
+Screenshots
+-----------
+
+### Main Menu
+![Main menu](https://raw.githubusercontent.com/Marneus68/DOSMAN/master/img/cap1.png)
+
+###  Configuration Screen
+![Configuration screen](https://raw.githubusercontent.com/Marneus68/DOSMAN/master/img/cap2.png)
 
 Dependencies
 ------------
