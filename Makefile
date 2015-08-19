@@ -5,7 +5,7 @@ CC      := g++
 # Warning levels
 WARN    :=
 # Optimisation
-OFLAGS  := -std=c++11
+OFLAGS  := -std=c++11 -Wdeprecated-declarations
 # Link Options
 LDFLAGS := `pkg-config gtkmm-3.0 --cflags` `pkg-config glibmm-2.4 --cflags`
 # Link Libraries
@@ -26,22 +26,38 @@ VPATH	:= $(INCDIR) $(SRCDIR) $(OBJDIR)
 CPP_SRCS    = $(wildcard src/*.cpp)
 OBJ_FILES   = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(CPP_SRCS))
 
+# Colors
+black	= `tput setaf 0`
+red		= `tput setaf 1`
+green	= `tput setaf 2`
+yellow	= `tput setaf 3`
+blue	= `tput setaf 4`
+magenta = `tput setaf 5`
+cyan	= `tput setaf 2`
+white	= `tput setaf 7`
+reset	= `tput sgr0`
+
 all: ${TARGET}
 
 $(TARGET): $(OBJ_FILES)
-	@echo "Linking..."
+	@echo "$(blue)Linking...$(reset)"
 	$(CC) $(WARN) $(OFLAGS) $(CFLAGS) $(LDFLAGS) $(OBJ_FILES) -o $@ $(LDLIBS) 
-	@echo "Done."
+	@echo "$(green)Done.$(reset)"
 
-obj/%.o: %.cpp
-	@echo "Compiling "$<"..."
+obj/%.o: %.cpp $(OBJDIR)
+	@echo "$(blue)Compiling $(yellow)"$<"$(blue)...$(reset)"
 	$(CC) -c $(WARN) $(OFLAGS) $(CFLAGS) $(LDFLAGS) $< -o $@
 
+$(OBJDIR):
+	@echo "$(blue)Creating object directory..."$(reset)
+	mkdir -p $(OBJDIR)
+
 clean: 
-	@echo "Cleaning..."
+	@echo "$(blue)Cleaning executables...$(reset)"
 	rm -rf $(OBJDIR)/*.o
 
 mrproper: clean
+	@echo "$(blue)Cleaning executables...$(reset)"
 	rm -rf ${TARGET}
 
 install:
@@ -66,5 +82,3 @@ test: $(TARGET)
 	mkdir -p ~/.dosman
 	cp -rf test -t ~/.dosman
 	./dosman
-
-
